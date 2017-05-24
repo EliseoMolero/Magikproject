@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/subirIncidencia"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Subir incidencia" />
+        <item
+            android:id="@+id/mapaIncidencia"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Mapa de Incidencias" />
+        <item
+            android:id="@+id/misIncidencias"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Mis Incidencias" />
+        <item
+            android:id="@+id/miPerfil"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Mi Perfil" />
+    </group>
+
+    <item android:title="Otras opciones">
+        <menu>
+            <item
+                android:id="@+id/contactanos"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Contáctanos!" />
+            <item
+                android:id="@+id/salir"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Salir " />
+        </menu>
+    </item>
+
+</menu>
