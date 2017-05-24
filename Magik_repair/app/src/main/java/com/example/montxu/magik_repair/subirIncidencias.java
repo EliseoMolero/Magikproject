@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,7 +30,17 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
 import java.io.File;
+
+import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -83,7 +94,11 @@ public class subirIncidencias extends Fragment {
             @Override
             public void onClick(View v) {
                 //MANDAR TODOO A LA API""!!
-                Toast.makeText(getContext(), "Se envio su incidencia,\n   ¡muchas gracias!", Toast.LENGTH_LONG).show();
+                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias();
+                    tareaAsync.execute();
+
+
+
             }
         });
         return mView;
@@ -166,6 +181,28 @@ public class subirIncidencias extends Fragment {
                     break;
 
             }
+        }
+    }
+
+    private class HttpPostIncidencias extends AsyncTask<String, Void, String>{
+
+        String resultado;
+
+        @Override
+        protected String doInBackground(String... params) {
+            String descripcion ="cai";
+            String direccion="weno";
+            String imagen="ahi";
+            String latitud="cai";
+            String longitud="weno";
+            String email="ahi";
+            operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email);
+            return resultado;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getContext(), resultado, Toast.LENGTH_LONG).show();
         }
     }
 
