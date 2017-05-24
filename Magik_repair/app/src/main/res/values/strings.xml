@@ -8,4 +8,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="tipos_incidencias">
+        <item>boquete en calzada</item>
+        <item>algo roto</item>
+        <item>fuga de agua</item>
+        <item>peligro de muerte</item>
+        <item>desprendimientos</item>
+        <item>machetes</item>
+    </string-array>
 </resources>
