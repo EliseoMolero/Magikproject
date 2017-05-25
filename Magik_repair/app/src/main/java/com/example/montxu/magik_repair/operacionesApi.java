@@ -89,7 +89,7 @@ public class operacionesApi {
 
     public static void postIncidencia(String descripcion, String direccion, String imagen, String latitud, String longitud, String email){
 
-        String url="http://192.168.1.133/post/incidencias";
+        String url="http://192.168.43.132:5001/post/incidencias";
         try{
 
             JSONObject jsonObject = new JSONObject();

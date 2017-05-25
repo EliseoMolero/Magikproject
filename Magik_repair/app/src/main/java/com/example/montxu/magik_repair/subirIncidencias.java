@@ -192,10 +192,10 @@ public class subirIncidencias extends Fragment {
         protected String doInBackground(String... params) {
             String descripcion ="cai";
             String direccion="weno";
-            String imagen="ahi";
-            String latitud="cai";
-            String longitud="weno";
-            String email="ahi";
+            String imagen="11111";
+            String latitud="5";
+            String longitud="6";
+            String email="antonio@mail.com";
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email);
             return resultado;
         }
