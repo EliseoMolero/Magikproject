@@ -74,7 +74,7 @@ public class operacionesApi {
     public String[] getIncidencia(String email){
 
         String url="http://192.168.1.133:5001/get/incidencias";
-        String[] result = new String[7];
+        String[] result = new String[8];
         try{
 
             JSONObject jsonObject = new JSONObject();
@@ -88,6 +88,7 @@ public class operacionesApi {
             Object latitud = jsonObjRecv.get("latitud");
             Object longitud = jsonObjRecv.get("longitud");
             Object id = jsonObjRecv.get("id");
+            Object estado = jsonObjRecv.get("estado");
 
 
 
@@ -99,6 +100,7 @@ public class operacionesApi {
             result[4] = String.valueOf(latitud);
             result[5] = String.valueOf(longitud);
             result[6] = email;
+            result[7] = String.valueOf(estado);
 
 
 
@@ -109,7 +111,7 @@ public class operacionesApi {
         return result;
     }
 
-    public static void postIncidencia(String descripcion, String direccion, String imagen, String latitud, String longitud, String email){
+    public static void postIncidencia(String descripcion, String direccion, String imagen, String latitud, String longitud, String email, String estado){
 
         String url="http://192.168.0.104:5001/post/incidencias";
         try{
@@ -121,6 +123,7 @@ public class operacionesApi {
             jsonObject.put("latitud", latitud);
             jsonObject.put("longitud", longitud);
             jsonObject.put("email", email);
+            jsonObject.put("estado", estado);
 
 
             HttpClient.SendHttpPost(url, jsonObject);
