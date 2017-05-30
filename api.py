@@ -133,14 +133,14 @@ def actualizar_usuario():
 	cursor = db.cursor()
 	try:
 		r = request.get_json()
-		idi = r.get("id")
+		ids = r.get("id")
 		nombre = r.get("nombre")
 		apellidos = r.get("apellidos")
 		email = r.get("email")
 		password = r.get("password")
 		admin = r.get("admin")
 		imagenPerfil = r.get("imagenPerfil")
-		sql = """UPDATE Usuario SET nombre = """+nombre+""", apellidos = """+apellidos+""", email = """+email+""", password = """+password+""", admin = """+admin+""", imagenPerfil = """+imagenPerfil+""" WHERE id ="""+ids+""";"""
+		sql = """UPDATE Usuario SET nombre = '"""+nombre+"""', apellidos = '"""+apellidos+"""', email = '"""+email+"""', password = '"""+password+"""', admin = '"""+admin+"""', imagenPerfil = '"""+imagenPerfil+"""' WHERE idUsuario ='"""+ids+"""';"""
 		try:
 			cursor.execute(sql)
 			db.commit()
@@ -149,6 +149,7 @@ def actualizar_usuario():
 		cursor.close()
 		return "Successfully inserted on database."
 	except:
+		print 'peta'
 		cursor.close()
 		return "Unable to insert data on database."
 
