@@ -161,7 +161,7 @@ public class operacionesApi {
 
     public static void putUsuario(String id, String nombre, String apellidos, String email, String password, String admin, String imagenPerfil){
 
-        String url="http://192.168.1.133:5001/put/usuario";
+        String url="http://192.168.0.104:5001/put/usuario";
         try{
 
             JSONObject jsonObject = new JSONObject();
