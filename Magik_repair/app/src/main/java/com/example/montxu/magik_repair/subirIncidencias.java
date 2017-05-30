@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -122,7 +123,13 @@ public class subirIncidencias extends Fragment {
                             if (descripcion!="") {
                                 HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, dic, " ");
                                 tareaAsync.execute();
-                                
+                                mSendButton.setEnabled(false);
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        mSendButton.setEnabled(true);
+                                    }
+                                }, 30000);
                             }
                             else{
                                 Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
@@ -149,6 +156,14 @@ public class subirIncidencias extends Fragment {
                             if (descripcion!="") {
                                     HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
                                     tareaAsync.execute();
+                                mSendButton.setEnabled(false);
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        mSendButton.setEnabled(true);
+
+                                    }
+                                }, 30000);
                                 }
                                 else{
                                     Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
@@ -300,7 +315,7 @@ public class subirIncidencias extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), resultado, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Espere mientras se envia la incidencia", Toast.LENGTH_LONG).show();
         }
     }
 
