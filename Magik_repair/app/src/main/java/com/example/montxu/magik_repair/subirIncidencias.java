@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -61,8 +64,10 @@ public class subirIncidencias extends Fragment {
     private RelativeLayout mRlView;
     private String mPath;
     private EditText mCajaDes;
+    private EditText mCajaDir;
     String lat;
     String lng;
+    String encodedImage = "Null";
 
     @Nullable
     @Override
@@ -73,11 +78,7 @@ public class subirIncidencias extends Fragment {
         mSendButton = (Button) mView.findViewById(R.id.Benviar);
         mRlView = (RelativeLayout) mView.findViewById(R.id.layoutF);
         mCajaDes = (EditText) mView.findViewById(R.id.cajaDes);
-        Spinner spinner = (Spinner) mView.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.tipos_incidencias, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        mCajaDir = (EditText) mView.findViewById(R.id.cajaDir);
         mOptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,35 +100,68 @@ public class subirIncidencias extends Fragment {
                 if (location != null) {
                     lat = String.valueOf(location.getLatitude());
                     lng = String.valueOf(location.getLongitude());
+                    Geocoder geocoder = new Geocoder(getContext());
+                    List<Address> direcciones = null;
+                    try {
+                        direcciones = geocoder.getFromLocation(location.getLatitude(), location.getLongitude() ,1);
+                    } catch (Exception e) {
+                        Log.d("Error", "Error en geocoder:"+e.toString());
+                    }
+                    if(direcciones != null && direcciones.size() > 0 ){
+                        Address direccion = direcciones.get(0);
+                        String dic = direccion.getAddressLine(0);
+                        //String direccionText = String.format("%s %s %s",
+                        //        direccion.getMaxAddressLineIndex() > 0 ? direccion.getAddressLine(0) : "",
+                        //        direccion.getLocality(),
+                        //        direccion.getCountryName()
+                        //);
+                        if (encodedImage.equals("Null")){
+                            Toast.makeText(getContext(), "Seleccione una imagen para su incidencia", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            if (descripcion!="") {
+                                HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, dic, " ");
+                                tareaAsync.execute();
+                                
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                }else if(String.valueOf(mCajaDir.getText())==""){
+                    Toast.makeText(getContext(), "La Direccion selecionada no es valida", Toast.LENGTH_LONG).show();
                 }
-                // Elemento geocoder en el contexto
-                Geocoder geocoder = new Geocoder(getContext());
-                // Elemento list que contendra la direccion
-                List<Address> direcciones = null;
-
-                // Funcion para obtener coger el nombre desde el geocoder
-                try {
-                    direcciones = geocoder.getFromLocation(location.getLatitude(), location.getLongitude() ,1);
-                } catch (Exception e) {
-                    Log.d("Error", "Error en geocoder:"+e.toString());
+                else{
+                    Geocoder geocoder2 = new Geocoder(getContext());
+                    List<Address> direcciones2 = null;
+                    try {
+                        direcciones2=geocoder2.getFromLocationName(String.valueOf(mCajaDir.getText()),1);
+                        double latD= direcciones2.get(0).getLatitude();
+                        double lngD= direcciones2.get(0).getLongitude();
+                        if (encodedImage.equals("Null")){
+                            Toast.makeText(getContext(), "Seleccione una imagen para su incidencia", Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            String lat = String.valueOf(latD);
+                            String lng = String.valueOf(lngD);
+                            if (descripcion!="") {
+                                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
+                                    tareaAsync.execute();
+                                }
+                                else{
+                                    Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "No se a podido encontrar su direccion", Toast.LENGTH_LONG).show();
+                    }catch (Exception e){
+                        Toast.makeText(getContext(), "No se a podido encontrar su direccion", Toast.LENGTH_LONG).show();
+                    }
                 }
 
-                // Funcion que determina si se obtuvo resultado o no
-                if(direcciones != null && direcciones.size() > 0 ){
-
-                    // Creamos el objeto address
-                    Address direccion = direcciones.get(0);
-
-                    // Creamos el string a partir del elemento direccion
-                    String dic = direccion.getAddressLine(0);
-                    //String direccionText = String.format("%s %s %s",
-                    //        direccion.getMaxAddressLineIndex() > 0 ? direccion.getAddressLine(0) : "",
-                    //        direccion.getLocality(),
-                    //        direccion.getCountryName()
-                    //);
-                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias("full", descripcion,lat, lng, dic, " ");
-                    tareaAsync.execute();
-                }
 
 
 
@@ -204,12 +238,21 @@ public class subirIncidencias extends Fragment {
                                 }
                             });
 
-
+                    Bitmap bm = BitmapFactory.decodeFile(mPath);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    byte[] b = baos.toByteArray();
+                    this.encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
                     Bitmap bitmap = BitmapFactory.decodeFile(mPath);
                     mSetImage.setImageBitmap(bitmap);
                     break;
                 case SELECT_PICTURE:
                     Uri path = data.getData();
+                    Bitmap bm2 = BitmapFactory.decodeFile(mPath);
+                    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                    bm2.compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                    byte[] b2 = baos2.toByteArray();
+                    this.encodedImage = Base64.encodeToString(b2, Base64.DEFAULT);
                     mSetImage.setImageURI(path);
                     break;
 
@@ -249,6 +292,7 @@ public class subirIncidencias extends Fragment {
             String estado = "No se ha revisado su incidencia todavia";
             System.out.println(direccion);
             System.out.println(latitud + " y " + longitud);
+            System.out.println(imagen);
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email, estado);
 
             return resultado;
