@@ -50,14 +50,17 @@ public class nuevoUsuario extends Fragment {
                 String compassstring=String.valueOf(compasstxt.getText());
                 String nombrestring=String.valueOf(nombretxt.getText());
                 String apellidosstring=String.valueOf(apellidostxt.getText());
+                comprobarExistencia(emailstring);
+                    //
 
-                if (validateEmail(emailstring)==true && validateCompass(compassstring,passstring)==true && otherValidates(emailstring,nombrestring,apellidosstring)==true && comprobarExistencia(emailstring)==true){
-                    HttpPostUsuario tareaAsync=new HttpPostUsuario();
-                    tareaAsync.execute();
-                    toastpositivo.show();
-                }else{
-                    toastnegativo.show();
-                }
+                //if (validateEmail(emailstring)==true && validateCompass(compassstring,passstring)==true && otherValidates(emailstring,nombrestring,apellidosstring)==true && comprobarExistencia(emailstring)==true){
+                //    System.out.println(emailstring);
+                    //HttpPostUsuario tareaAsync=new HttpPostUsuario(emailstring,passstring,compassstring,nombrestring,apellidosstring);
+                    //tareaAsync.execute();
+                //    toastpositivo.show();
+                //}else{
+                //    toastnegativo.show();
+                //}
             }
         });
 
@@ -84,14 +87,23 @@ public class nuevoUsuario extends Fragment {
     private class HttpPostUsuario extends AsyncTask<String, Void, String> {
 
         String resultado;
+        String emailstring;
+        String passstring;
+        String compassstring;
+        String nombrestring;
+        String apellidosstring;
+
+        public HttpPostUsuario(String emailstrin, String passstring, String compassstring, String nombrestring, String apellidosstring) {
+            this.emailstring = emailstrin;
+            this.passstring = passstring;
+            this.compassstring = compassstring;
+            this.nombrestring = nombrestring;
+            this.apellidosstring = apellidosstring;
+        }
 
         @Override
         protected String doInBackground(String... params) {
-            String emailstring=String.valueOf(emailtxt.getText());
-            String passstring=String.valueOf(passtxt.getText());
-            String compassstring=String.valueOf(compasstxt.getText());
-            String nombrestring=String.valueOf(nombretxt.getText());
-            String apellidosstring=String.valueOf(apellidostxt.getText());
+            System.out.println(emailstring);
             operacionesApi.postUsuario(nombrestring,apellidosstring,emailstring,passstring,"1","1110");
             return resultado;
         }
@@ -118,7 +130,7 @@ public class nuevoUsuario extends Fragment {
         @Override
         protected String[] doInBackground(String... params) {
 
-            String[] result = operacionesApi.getUsuario(this.input);
+            String[] result = operacionesApi.getEmails();
             this.resultado = result;
 
             return result;
@@ -135,23 +147,13 @@ public class nuevoUsuario extends Fragment {
         HttpGetEmails tareaAsync = new HttpGetEmails(email);
         tareaAsync.execute();
         String[] data;
-
-        try {
-            data = tareaAsync.get();
-
+            data = tareaAsync.getResultado();
+            System.out.println(data);
             for(int i =0;i>data.length;i++){
                 if (data[i].equals(email)){
                     return true;
                 }
             }
-
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
         textopass.setVisibility(View.INVISIBLE);
         textoemail.setVisibility(View.VISIBLE);
         return false;
