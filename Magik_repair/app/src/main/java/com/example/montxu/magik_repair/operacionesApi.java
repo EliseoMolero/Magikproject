@@ -12,10 +12,32 @@ import org.json.JSONObject;
 
 public class operacionesApi {
 
-    public String[] getUsuario(String email){
+    public static String[] getEmails(){
 
-        String url="http://192.168.1.133/get/usuario";
-        String[] result = new String[6];
+        String url="http://192.168.1.135:5001/get/usuario";
+
+
+            JSONObject jsonObject = new JSONObject();
+
+            JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+            String[] result = new String[jsonObject.length()];
+
+            for (int i = 0; i < jsonObjRecv.length() ; i++) {
+                try {
+                    result[i]=String.valueOf(jsonObjRecv.get("'"+i+"'"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        return result;
+    }
+
+    public static String[] getUsuario(String email){
+
+        String url="http://192.168.0.104:5001/get/usuario";
+        String[] result = new String[7];
         try{
 
             JSONObject jsonObject = new JSONObject();
@@ -25,7 +47,7 @@ public class operacionesApi {
             JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
             Object nombre = jsonObjRecv.get("nombre");
             Object apellidoss = jsonObjRecv.get("apellidos");
-            Object password = jsonObjRecv.get("passsword");
+            Object password = jsonObjRecv.get("password");
             Object admin = jsonObjRecv.get("admin");
             Object imagenPerfil = jsonObjRecv.get("imagenPerfil");
             Object id = jsonObjRecv.get("id");
@@ -51,7 +73,7 @@ public class operacionesApi {
 
     public String[] getIncidencia(String email){
 
-        String url="http://192.168.1.133/get/incidencias";
+        String url="http://192.168.1.133:5001/get/incidencias";
         String[] result = new String[7];
         try{
 
@@ -89,7 +111,7 @@ public class operacionesApi {
 
     public static void postIncidencia(String descripcion, String direccion, String imagen, String latitud, String longitud, String email){
 
-        String url="http://192.168.1.133/post/incidencias";
+        String url="http://192.168.0.104:5001/post/incidencias";
         try{
 
             JSONObject jsonObject = new JSONObject();
@@ -113,7 +135,7 @@ public class operacionesApi {
 
     public static void postUsuario(String nombre, String apellidos, String email, String password, String admin, String imagenPerfil){
 
-        String url="http://192.168.1.133/post/usuario";
+        String url="http://192.168.1.133:5001/post/usuario";
         try{
 
             JSONObject jsonObject = new JSONObject();
@@ -136,7 +158,7 @@ public class operacionesApi {
 
     public static void putUsuario(String id, String nombre, String apellidos, String email, String password, String admin, String imagenPerfil){
 
-        String url="http://192.168.1.133/put/usuario";
+        String url="http://192.168.1.133:5001/put/usuario";
         try{
 
             JSONObject jsonObject = new JSONObject();
