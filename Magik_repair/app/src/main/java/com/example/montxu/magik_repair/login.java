@@ -16,7 +16,7 @@ public class login extends AppCompatActivity {
     EditText Temail;
     EditText Tpassword;
     Button entrar;
-
+    Button registrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,7 @@ public class login extends AppCompatActivity {
         Temail = (EditText) findViewById(R.id.textEmail);
         Tpassword = (EditText) findViewById(R.id.textPassword);
         entrar = (Button) findViewById(R.id.buttonLogin);
+        registrar = (Button) findViewById(R.id.buttonRegistro);
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +52,14 @@ public class login extends AppCompatActivity {
                 }
                 Toast.makeText(login.this, "Listo", Toast.LENGTH_SHORT).show();
 
+
+            }
+        });
+        registrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent form = new Intent(getApplicationContext(), nuevo_user.class);
+                startActivity(form);
 
             }
         });
