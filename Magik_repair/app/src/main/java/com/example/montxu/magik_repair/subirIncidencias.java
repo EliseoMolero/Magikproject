@@ -125,7 +125,7 @@ public class subirIncidencias extends Fragment {
                     //        direccion.getLocality(),
                     //        direccion.getCountryName()
                     //);
-                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias("full", descripcion,lat, lng, dic);
+                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias("full", descripcion,lat, lng, dic, " ");
                     tareaAsync.execute();
                 }
 
@@ -246,7 +246,7 @@ public class subirIncidencias extends Fragment {
             String imagen=this.imagen;
             String longitud = lat;
             String email="antonio@mail.com";
-            String estado = "No revisado todavia";
+            String estado = "No se ha revisado su incidencia todavia";
             System.out.println(direccion);
             System.out.println(latitud + " y " + longitud);
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email, estado);
