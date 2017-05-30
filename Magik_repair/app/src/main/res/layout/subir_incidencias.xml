@@ -160,7 +160,7 @@
                 android:layout_marginTop="377dp" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/cajaDes"
                 android:layout_width="340dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="8dp"
