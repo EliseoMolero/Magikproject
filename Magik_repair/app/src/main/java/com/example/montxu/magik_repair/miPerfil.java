@@ -3,6 +3,9 @@ package com.example.montxu.magik_repair;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,8 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by montxu on 24/05/17.
@@ -74,7 +80,8 @@ public class miPerfil extends Fragment{
         compasstxt.setText(miUsuario.getPassword());
         nombretxt.setText(miUsuario.getNombre());
         apellidostxt.setText(miUsuario.getApellidos());
-        //TODO cargar foto de usuario en el imageview
+        fotoperfilview.setImageURI(Uri.parse(miUsuario.getImagenPerfil()));
+
 
         botonemail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +116,7 @@ public class miPerfil extends Fragment{
         botonfoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO abrir galeria para cambiar imagen <---------------------------------------------
+                
                 showOptions();
             }
         });
@@ -182,6 +189,42 @@ public class miPerfil extends Fragment{
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
             startActivityForResult(intent, PHOTO_CODE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("file_path", mPath);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case PHOTO_CODE:
+                    MediaScannerConnection.scanFile(getContext(),
+                            new String[]{mPath}, null,
+                            new MediaScannerConnection.OnScanCompletedListener() {
+                                @Override
+                                public void onScanCompleted(String path, Uri uri) {
+                                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                                    Log.i("ExternalStorage", "-> Uri = " + uri);
+                                }
+                            });
+
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
+                    fotoperfilview.setImageBitmap(bitmap);
+                    break;
+                case SELECT_PICTURE:
+                    Uri path = data.getData();
+                    fotoperfilview.setImageURI(path);
+                    break;
+
+            }
         }
     }
 
