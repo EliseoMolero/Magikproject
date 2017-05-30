@@ -1,15 +1,10 @@
 package com.example.montxu.magik_repair;
 
-import android.Manifest;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.location.LocationManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,22 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONObject;
-
 import java.io.File;
-
-import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,7 +40,6 @@ public class subirIncidencias extends Fragment {
     private static String APP_DIRECTORY = "Repair_Sevilla/";
     private static String MEDIA_DIRECTORY = APP_DIRECTORY + "RepairSevilla";
 
-    private final int MY_PERMISSIONS = 100;
     private final int PHOTO_CODE = 200;
     private final int SELECT_PICTURE = 300;
 
@@ -65,7 +49,7 @@ public class subirIncidencias extends Fragment {
     private Button mSendButton;
     private RelativeLayout mRlView;
     private String mPath;
-
+    private EditText mCajaDes;
 
     @Nullable
     @Override
@@ -75,13 +59,11 @@ public class subirIncidencias extends Fragment {
         mSetImage = (ImageView) mView.findViewById(R.id.fotoView);
         mSendButton = (Button) mView.findViewById(R.id.Benviar);
         mRlView = (RelativeLayout) mView.findViewById(R.id.layoutF);
+        mCajaDes = (EditText) mView.findViewById(R.id.cajaDes);
         Spinner spinner = (Spinner) mView.findViewById(R.id.spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.tipos_incidencias, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
+        R.array.tipos_incidencias, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         mOptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +76,8 @@ public class subirIncidencias extends Fragment {
             @Override
             public void onClick(View v) {
                 //MANDAR TODOO A LA API""!!
-                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias();
+                    String descripcion = String.valueOf(mCajaDes.getText());
+                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias("full",descripcion);
                     tareaAsync.execute();
 
 
@@ -187,16 +170,27 @@ public class subirIncidencias extends Fragment {
     private class HttpPostIncidencias extends AsyncTask<String, Void, String>{
 
         String resultado;
+        String imagen;
+        String descripcion;
+        map_formulario m=new map_formulario();
+        Usuario us=new Usuario();
+
+        public HttpPostIncidencias(String imagen, String descripcion) {
+            this.imagen = imagen;
+            this.descripcion = descripcion;
+        }
 
         @Override
         protected String doInBackground(String... params) {
-            String descripcion ="cai";
+            String latitud = String.valueOf(m.getLat());
+            String descripcion =this.descripcion;
             String direccion="weno";
-            String imagen="11111";
-            String latitud="5";
-            String longitud="6";
+            String imagen=this.imagen;
+            String longitud = String.valueOf(m.getLng());
             String email="antonio@mail.com";
+            System.out.println(latitud + " y " + longitud);
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email);
+
             return resultado;
         }
 

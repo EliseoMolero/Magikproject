@@ -14,8 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,7 +22,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.example.montxu.magik_repair.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,6 +42,14 @@ public class map_formulario extends Fragment implements OnMapReadyCallback {
 
     public map_formulario() {
         // Required empty public constructor
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
     }
 
     @Nullable
@@ -84,8 +89,8 @@ public class map_formulario extends Fragment implements OnMapReadyCallback {
 
     public void actualizarUbica(Location location) {
         if (location != null) {
-            lat = location.getLatitude();
-            lng = location.getLongitude();
+            this.lat = location.getLatitude();
+            this.lng = location.getLongitude();
             agregarMarka(lat, lng);
         }
     }
