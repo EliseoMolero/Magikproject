@@ -56,9 +56,20 @@ public class miPerfil extends Fragment{
         mView = inflater.inflate(R.layout.mi_perfil, container, false );
 
         miUsuario=new Usuario();
+        miUsuario.setIds("3");
+        miUsuario.setNombre("antonio");
+        miUsuario.setApellidos("guardia");
+        miUsuario.setPassword("antonio");
+        miUsuario.setEmail("antonio@mail.com");
+        miUsuario.setAdmin("Si");
+        miUsuario.setImagenPerfil("asdasdas");
         miUsuario.getEmail();
 
+        textoemail = (TextView)mView.findViewById(R.id.textoemail);
+        textopass = (TextView)mView.findViewById(R.id.textopass);
+
         textoemail.setVisibility(View.INVISIBLE);
+
         textopass.setVisibility(View.INVISIBLE);
 
         botonemail=(Button)mView.findViewById(R.id.botonemail);
@@ -81,6 +92,7 @@ public class miPerfil extends Fragment{
         nombretxt.setText(miUsuario.getNombre());
         apellidostxt.setText(miUsuario.getApellidos());
         fotoperfilview.setImageURI(Uri.parse(miUsuario.getImagenPerfil()));
+        botonguardar.setEnabled(true);
 
 
         botonemail.setOnClickListener(new View.OnClickListener() {
@@ -128,15 +140,22 @@ public class miPerfil extends Fragment{
                 Toast toastpositivo =Toast.makeText(getContext(),"Datos modificados con éxito", Toast.LENGTH_SHORT);
                 Toast toastnegativo =Toast.makeText(getContext(),"No ha podido modificar sus datos", Toast.LENGTH_SHORT);
 
+                String compassstring =String.valueOf(compasstxt.getText());
                 String emailstring=String.valueOf(emailtxt.getText());
                 String passstring=String.valueOf(passtxt.getText());
-                String compassstring=String.valueOf(compasstxt.getText());
                 String nombrestring=String.valueOf(nombretxt.getText());
                 String apellidosstring=String.valueOf(apellidostxt.getText());
+                String imgstring=miUsuario.getImagenPerfil();
+                String idstring=miUsuario.getIds();
+                String adminstring=miUsuario.getAdmin();
+
+                HttpPutEditarUsuario tareaAsync=new HttpPutEditarUsuario(emailstring, passstring, imgstring, idstring, adminstring, nombrestring, apellidosstring);
+                tareaAsync.execute();
+                toastpositivo.show();
 
                 if (validateEmail(emailstring)==true && validateCompass(compassstring,passstring)==true && otherValidates(emailstring,nombrestring,apellidosstring)==true && comprobarExistencia(emailstring)==true){
-                    HttpPutEditarUsuario tareaAsync=new HttpPutEditarUsuario();
-                    tareaAsync.execute();
+                    HttpPutEditarUsuario tareaAsync1=new HttpPutEditarUsuario(emailstring, passstring, imgstring, idstring, adminstring, nombrestring, apellidosstring);
+                    tareaAsync1.execute();
                     toastpositivo.show();
                 }else{
                     toastnegativo.show();
@@ -231,16 +250,27 @@ public class miPerfil extends Fragment{
     private class HttpPutEditarUsuario extends AsyncTask<String, Void, String> {
 
         String resultado;
+        String emailstring;
+        String passstring;
+        String imgstring;
+        String idstring;
+        String adminstring;
+        String nombrestring;
+        String apellidosstring;
+
+        public HttpPutEditarUsuario(String emailstring, String passstring, String imgstring, String idstring, String adminstring, String nombrestring, String apellidosstring) {
+            this.emailstring = emailstring;
+            this.passstring = passstring;
+            this.imgstring = imgstring;
+            this.idstring = idstring;
+            this.adminstring = adminstring;
+            this.nombrestring = nombrestring;
+            this.apellidosstring = apellidosstring;
+        }
 
         @Override
         protected String doInBackground(String... params) {
-            String emailstring=String.valueOf(emailtxt.getText());
-            String passstring=String.valueOf(passtxt.getText());
-            String compassstring=String.valueOf(compasstxt.getText());
-            String nombrestring=String.valueOf(nombretxt.getText());
-            String apellidosstring=String.valueOf(apellidostxt.getText());
-            //operacionesApi.postUsuario(nombrestring,apellidosstring,emailstring,passstring,"1","1110");
-            operacionesApi.putUsuario("1",nombrestring,apellidosstring,emailstring,passstring,"1","1110");
+            operacionesApi.putUsuario(this.idstring,this.nombrestring, this.apellidosstring, this.emailstring, this.passstring,this.adminstring,this.imgstring);
             return resultado;
         }
 
