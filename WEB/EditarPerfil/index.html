@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Formulario</title>
+        <meta charset="utf-8">
+        <link href="estiloRegistro.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body background="https://lh3.googleusercontent.com/4siO1cBrlAs4N-GLAwP3fhMcS5trQ-A_le08Z7Iml3miW-G5VZuAQMoPFI1Anwy3ylUjMCM0o_9Uc85_YbdbmifFjmozLrbl0D59mR11keoJFw6v7WaVJM1PX2exBMTc6_FNjv0">
+        <ul>
+  <li><a href="default.html">Home</a></li>
+  <li><a href="news.asp">News</a></li>
+  <li><a href="contact.asp">Contact</a></li>
+  <li><a href="about.asp">About</a></li>
+</ul>
+        
+        <div id="registrar">
+
+        </div>
+        <div id="envoltura">
+            <div id="contenedor">
+
+                <div id="cabecera">
+                    MI PERFIL
+                </div>
+
+                <div id="cuerpo">
+
+                    <form id="form-login" action="#" method="post" >
+                        <p><image width="100px" height="100px" /></p>
+                        <p><label for="nombre">Nombre*:</label></p>
+                        <p id="editarnombre"><input name="nombre" type="text" id="nombre" class="editar" placeholder="Escriba su Nombre" autofocus=""/>
+                            <input name="botonnombre" type="button" id="editarnombre" value="Editar" class="boton"/>
+                        </p>
+                        </br>
+                        <!--=============================================================================================-->
+                        <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
+                        <!--Puedes usar tantas como necesites-->
+                        <p><label for="apellidos">Apellidos*:</label></p>
+                        <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Escriba sus Apellidos" />
+                        <input name="botonapellidos" type="button" id="editarnombre" value="Editar" class="boton"/>
+                        </p>
+                        <!--=============================================================================================-->
+                        </br>
+                        <p><label for="correo">Email*:</label></p>
+                        <input name="correo" type="text" id="correo" class="correo" placeholder="Escriba su Email" />
+                        <input name="botonemail" type="button" id="editarnombre" value="Editar" class="boton"/>
+                        </p>
+                        </br>
+                        <p><label for="pass">Contraseña*:</label></p>
+                        <p style="color: red;font-size: 10px" > (Debe contener mayúscula, minúscula y número)</p>
+                        <input name="pass" type="password" id="pass" class="pass" placeholder="Escriba su Contraseña" />
+                        <input name="botonpass" type="button" id="editarnombre" value="Editar" class="boton"/>
+                        </p>
+                        </br>
+                        <p><label for="repass">Confirmar Contraseña*:</label></p>
+                        <input name="repass" type="password" id="repass" class="repass" placeholder="Repita su Contraseña" /></p>
+
+                        <p style="color: red">(*)Campos obligatorios</p>
+                        <p id="bot"><input name="submit" type="submit" id="boton" value="Registrar" class="boton"/></p>
+                    </form>
+                </div>
+
+                <div id="pie">ReparaSevilla</div>
+            </div><!-- fin contenedor -->
+            <div id="fondogris"></div>
+        </div>
+
+    </body>
+
+</html>
