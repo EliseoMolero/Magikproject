@@ -58,7 +58,7 @@ def obtener_usuario():
 
 @app.route('/get/incidencias', methods=['POST'])
 def obtener_incidencias():
-		cursor = db.cursor()
+	cursor = db.cursor()
 	try:
 		r = request.get_json()
 		email = r.get("email")
