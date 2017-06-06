@@ -54,6 +54,7 @@ public class miPerfil extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.mi_perfil, container, false );
+        Intent i = getActivity().getIntent();
         miUsuario = (Usuario) i.getSerializableExtra("usuario");
 
         textoemail = (TextView)mView.findViewById(R.id.textoemail);
