@@ -40,7 +40,9 @@ public class login extends AppCompatActivity {
                     System.out.println(data[3]);
                     System.out.println(password);
                     if (data[3].equals(password)) {
+                        Usuario usuario = new Usuario(data[6], data[0], data[1], data[2], data[3], data[4], data[5]);
                         Intent form = new Intent(getApplicationContext(), Pantalla_Principal.class);
+                        form.putExtra("parametro", usuario);
                         startActivity(form);
                     }else {
                         Toast.makeText(login.this, "Correo o contraseña incorrecta", Toast.LENGTH_SHORT).show();
