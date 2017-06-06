@@ -120,7 +120,8 @@ public class Pantalla_Principal extends AppCompatActivity
         int id = item.getItemId();
         android.app.FragmentManager fragmentManager = getFragmentManager();
         android.support.v4.app.FragmentManager fmm = getSupportFragmentManager();
-
+        Usuario usuario = (Usuario)getIntent().getExtras().getSerializable("parametro");
+        getIntent().putExtra("usuario", usuario);
 
         if(spm.isAdded()){
             fmm.beginTransaction().hide(spm).commit();
