@@ -172,61 +172,6 @@ public class nuevoUsuario extends Fragment {
             }
         return true;
     }
-private class HttpGetEmails extends AsyncTask<String, Object, String[]> {
-
-        String[] resultado;
-        String input;
-
-        public HttpGetEmails(String input) {
-            this.input = input;
-        }
-
-        public String[] getResultado() {
-            return resultado;
-        }
-
-        public void setResultado(String[] resultado) {
-            this.resultado = resultado;
-        }
-
-        @Override
-        protected String[] doInBackground(String... params) {
-            String[] result = operacionesApi.getEmails();
-            setResultado(result);
-
-            return this.resultado;
-        }
-
-        @Override
-        protected void onPostExecute(String[] strings) {
-            super.onPostExecute(strings);
-        }
-    }
-
-    public boolean comprobarExistencia(String email){
-
-        HttpGetEmails tareaAsync = new HttpGetEmails(email);
-        tareaAsync.execute();
-
-        String[] data = new String[0];
-        try {
-            data = tareaAsync.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        for(int i =0;i<data.length;i++){
-            if (data[i].equals("[\""+email+"\"]")){
-
-                    textopass.setVisibility(View.INVISIBLE);
-                    textoemail.setVisibility(View.VISIBLE);
-                    return false;
-                }
-            }
-        return true;
-    }
 
     public boolean otherValidates(String emailstring, String nombrestring, String apellidosstring) {
 
