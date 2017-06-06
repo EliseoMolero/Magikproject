@@ -14,26 +14,26 @@ public class operacionesApi {
 
     public static String[] getEmails(){
 
-        String url="http://192.168.1.135:5001/get/usuario";
+        String url="http://192.168.0.104:5001/get/emails";
 
 
             JSONObject jsonObject = new JSONObject();
 
             JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
-            String[] result = new String[jsonObject.length()];
+            String[] result = new String[jsonObjRecv.length()];
 
             for (int i = 0; i < jsonObjRecv.length() ; i++) {
                 try {
-                    result[i]=String.valueOf(jsonObjRecv.get("'"+i+"'"));
+                    Object a = jsonObjRecv.get(String.valueOf(i));
+                    result[i]=String.valueOf(a);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-
         return result;
     }
-
+    
     public static String[] getUsuario(String email){
 
         String url="http://192.168.0.104:5001/get/usuario";
