@@ -56,25 +56,24 @@ def obtener_usuario():
 #		return "Unable to insert data on database."
 
 
-@app.route('/get/incidencias', methods=['GET'])
+@app.route('/get/incidencias', methods=['POST'])
 def obtener_incidencias():
-	cursor = db.cursor()
+		cursor = db.cursor()
 	try:
 		r = request.get_json()
 		email = r.get("email")
-		sql = """SELECT * FROM Incidencias WHERE email="""+email+""";"""
+		sql = "SELECT * FROM Incidencias WHERE email='"+email+"'"";"
 		cursor.execute(sql)
 		resultados = cursor.fetchall()
 		list_data=[]
 		for resultado in resultados:
-			list_resultados = list(resultados)
-			ids= list_resultados[0]
-			descripcion = list_resultados[1]
-			direccion = list_resultados[2]
-			imagen = list_resultados[3]
-			latitud = list_resultados[4]
-			longitud = list_resultados[5]
-			estado = list_resultados[6]
+			ids= resultado[0]
+			descripcion = resultado[1]
+			direccion = resultado[2]
+			imagen = resultado[3]
+			latitud = str(resultado[4])
+			longitud = str(resultado[5])
+			estado = resultado[6]
 			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":imagen, "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
 			list_data.append(data)
 		cursor.close()
