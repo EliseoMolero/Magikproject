@@ -303,6 +303,7 @@ public class subirIncidencias extends Fragment {
             String direccion=this.direccion;
             String imagen=this.imagen;
             String longitud = lat;
+            Intent i = getActivity().getIntent();
             Usuario miUsuario = (Usuario) i.getSerializableExtra("usuario");
             String email=miUsuario.getEmail();
             String estado = "No se ha revisado su incidencia todavia";
