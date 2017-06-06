@@ -303,11 +303,9 @@ public class subirIncidencias extends Fragment {
             String direccion=this.direccion;
             String imagen=this.imagen;
             String longitud = lat;
-            String email="antonio@mail.com";
+            Usuario miUsuario = (Usuario) i.getSerializableExtra("usuario");
+            String email=miUsuario.getEmail();
             String estado = "No se ha revisado su incidencia todavia";
-            System.out.println(direccion);
-            System.out.println(latitud + " y " + longitud);
-            System.out.println(imagen);
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email, estado);
 
             return resultado;
