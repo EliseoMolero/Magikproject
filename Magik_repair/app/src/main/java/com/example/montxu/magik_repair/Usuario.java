@@ -1,10 +1,12 @@
 package com.example.montxu.magik_repair;
 
+import java.io.Serializable;
+
 /**
  * Created by root on 30/05/17.
  */
 
-public class Usuario {
+public class Usuario implements Serializable {
 
     public String ids;
     public String nombre;
