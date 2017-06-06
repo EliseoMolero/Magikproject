@@ -50,19 +50,18 @@ public class nuevoUsuario extends Fragment {
                 String compassstring=String.valueOf(compasstxt.getText());
                 String nombrestring=String.valueOf(nombretxt.getText());
                 String apellidosstring=String.valueOf(apellidostxt.getText());
-                comprobarExistencia(emailstring);
-                    //
-
-                //if (validateEmail(emailstring)==true && validateCompass(compassstring,passstring)==true && otherValidates(emailstring,nombrestring,apellidosstring)==true && comprobarExistencia(emailstring)==true){
-                //    System.out.println(emailstring);
-                    //HttpPostUsuario tareaAsync=new HttpPostUsuario(emailstring,passstring,compassstring,nombrestring,apellidosstring);
-                    //tareaAsync.execute();
-                //    toastpositivo.show();
-                //}else{
-                //    toastnegativo.show();
-                //}
+                
+                if (validateEmail(emailstring)==true && validateCompass(compassstring,passstring)==true && otherValidates(emailstring,nombrestring,apellidosstring)==true && comprobarExistencia(emailstring)==true){
+                    HttpPostUsuario tareaAsync=new HttpPostUsuario(emailstring,passstring,compassstring,nombrestring,apellidosstring);
+                    tareaAsync.execute();
+                    Intent form = new Intent(getContext(), login.class);
+                    startActivity(form);
+                }else{
+                    toastnegativo.show();
+                }
             }
         });
+
 
         final Button infoboton=(Button)mView.findViewById(R.id.infoboton);
         textopass=(TextView)mView.findViewById(R.id.textopass);
@@ -127,13 +126,20 @@ public class nuevoUsuario extends Fragment {
             return resultado;
         }
 
+        public void setResultado(String[] resultado) {
+            this.resultado = resultado;
+        }
+
+        //public String[] getResultado() {
+        //    return resultado;
+        //}
+
         @Override
         protected String[] doInBackground(String... params) {
-
             String[] result = operacionesApi.getEmails();
-            this.resultado = result;
+            setResultado(result);
 
-            return result;
+            return this.resultado;
         }
 
         @Override
@@ -146,17 +152,80 @@ public class nuevoUsuario extends Fragment {
 
         HttpGetEmails tareaAsync = new HttpGetEmails(email);
         tareaAsync.execute();
-        String[] data;
-            data = tareaAsync.getResultado();
-            System.out.println(data);
-            for(int i =0;i>data.length;i++){
-                if (data[i].equals(email)){
-                    return true;
+
+        String[] data = new String[0];
+        try {
+            data = tareaAsync.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        for(int i =0;i<data.length;i++){
+            if (data[i].equals("[\""+email+"\"]")){
+
+                    textopass.setVisibility(View.INVISIBLE);
+                    textoemail.setVisibility(View.VISIBLE);
+                    return false;
                 }
             }
-        textopass.setVisibility(View.INVISIBLE);
-        textoemail.setVisibility(View.VISIBLE);
-        return false;
+        return true;
+    }
+private class HttpGetEmails extends AsyncTask<String, Object, String[]> {
+
+        String[] resultado;
+        String input;
+
+        public HttpGetEmails(String input) {
+            this.input = input;
+        }
+
+        public String[] getResultado() {
+            return resultado;
+        }
+
+        public void setResultado(String[] resultado) {
+            this.resultado = resultado;
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+            String[] result = operacionesApi.getEmails();
+            setResultado(result);
+
+            return this.resultado;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            super.onPostExecute(strings);
+        }
+    }
+
+    public boolean comprobarExistencia(String email){
+
+        HttpGetEmails tareaAsync = new HttpGetEmails(email);
+        tareaAsync.execute();
+
+        String[] data = new String[0];
+        try {
+            data = tareaAsync.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        for(int i =0;i<data.length;i++){
+            if (data[i].equals("[\""+email+"\"]")){
+
+                    textopass.setVisibility(View.INVISIBLE);
+                    textoemail.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            }
+        return true;
     }
 
     public boolean otherValidates(String emailstring, String nombrestring, String apellidosstring) {
