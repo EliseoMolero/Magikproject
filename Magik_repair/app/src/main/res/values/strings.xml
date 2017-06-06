@@ -1,19 +1,9 @@
 <resources>
     <string name="app_name">Magik_repair</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string-array name="tipos_incidencias">
-        <item>boquete en calzada</item>
-        <item>algo roto</item>
-        <item>fuga de agua</item>
-        <item>peligro de muerte</item>
-        <item>desprendimientos</item>
-        <item>machetes</item>
-    </string-array>
+    <string name="textomail">Email </string>
+    <string name="pass">Password</string>
 </resources>
