@@ -192,22 +192,26 @@ public class operacionesApi {
             e.printStackTrace();
         }
     }
-    private class HttpGetFincidencias extends AsyncTask<String, Void, String> {
+        public static String[] getFullIncidencias(){
+        String url="http://192.168.0.104/get/fincidencias";
 
-        String[] inci;
 
+        JSONObject jsonObject = new JSONObject();
 
-        @Override
-        protected String doInBackground(String... params) {
-            String[] result = operacionesApi.getFullIncidencias();
-            inci=result;
-            return "na";
-        }
+        JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+        String[] result = new String[jsonObjRecv.length()];
 
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
-        }
+            for (int i = 0; i < jsonObjRecv.length() ; i++) {
+                try {
+
+                    Object a = jsonObjRecv.get(String.valueOf(i));
+                    result[i]=String.valueOf(a);
+
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        return result;
     }
 
 }
