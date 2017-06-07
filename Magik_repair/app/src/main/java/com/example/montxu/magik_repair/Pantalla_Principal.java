@@ -231,5 +231,21 @@ public class Pantalla_Principal extends AppCompatActivity
         LatLng i3 = new LatLng(37.380166, -5.971464);
         CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(i2, 14);
     }
+        private class HttpGetFincidencias extends AsyncTask<String, Void, String> {
 
+        String[] inci;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String[] result = operacionesApi.getFullIncidencias();
+            inci=result;
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+        }
+    }
 }
