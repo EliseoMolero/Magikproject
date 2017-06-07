@@ -57,6 +57,20 @@ public class Pantalla_Principal extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         spm.getMapAsync(this);
+        
+        //HttpGetFincidencias tareaAsync = new HttpGetFincidencias();
+        //tareaAsync.execute();
+
+        //String gdata;
+        //try {
+        //    gdata = tareaAsync.get();
+        //    System.out.println(gdata);
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //} catch (ExecutionException e) {
+        //    e.printStackTrace();
+        //}
+        
         if(mayRequestStoragePermission()) {
             Toast.makeText(getApplicationContext(), "Bienvenido a repair sevilla", Toast.LENGTH_LONG).show();
         }
@@ -64,20 +78,6 @@ public class Pantalla_Principal extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "Permisos No Aceptados", Toast.LENGTH_LONG).show();
 
         }
-
-        //mLocationButton.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            //public void onClick(View v) {
-                //map.ubicacionIncidencia();
-
-          //  }
-        //});
-        //mSendButton.setOnClickListener(new View.OnClickListener() {
-           // @Override
-         //   public void onClick(View v) {
-          //      Toast.makeText(getApplicationContext(), "Se envio su incidencia,\n   ¡muchas gracias!", Toast.LENGTH_LONG).show();
-        //    }
-        //});
 
     }
 
