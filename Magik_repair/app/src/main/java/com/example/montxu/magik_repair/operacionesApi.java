@@ -71,42 +71,34 @@ public class operacionesApi {
         return result;
     }
 
-    public String[] getIncidencia(String email){
+    public static String[] getIncidencias(String email){
 
-        String url="http://192.168.1.133:5001/get/incidencias";
-        String[] result = new String[8];
-        try{
+        String url="http://192.168.0.104:5001/get/incidencias";
 
-            JSONObject jsonObject = new JSONObject();
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
             jsonObject.put("email", email);
-
-
-            JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
-            Object descripcion = jsonObjRecv.get("descripcion");
-            Object direccion = jsonObjRecv.get("direccion");
-            Object imagen = jsonObjRecv.get("imagen");
-            Object latitud = jsonObjRecv.get("latitud");
-            Object longitud = jsonObjRecv.get("longitud");
-            Object id = jsonObjRecv.get("id");
-            Object estado = jsonObjRecv.get("estado");
-
-
-
-
-            result[0] = String.valueOf(id);
-            result[1] = String.valueOf(descripcion);
-            result[2] = String.valueOf(direccion);
-            result[3] = String.valueOf(imagen);
-            result[4] = String.valueOf(latitud);
-            result[5] = String.valueOf(longitud);
-            result[6] = email;
-            result[7] = String.valueOf(estado);
-
-
-
-
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+
+        JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+        String[] result = new String[jsonObjRecv.length()];
+
+
+        for (int i = 0; i < jsonObjRecv.length() ; i++) {
+            try {
+
+                Object a = jsonObjRecv.get(String.valueOf(i));
+                result[i]=String.valueOf(a);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
         return result;
     }
