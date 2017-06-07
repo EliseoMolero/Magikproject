@@ -192,5 +192,22 @@ public class operacionesApi {
             e.printStackTrace();
         }
     }
+    private class HttpGetFincidencias extends AsyncTask<String, Void, String> {
+
+        String[] inci;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            String[] result = operacionesApi.getFullIncidencias();
+            inci=result;
+            return "na";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+        }
+    }
 
 }
