@@ -17,6 +17,8 @@ public class login extends AppCompatActivity {
     EditText Tpassword;
     Button entrar;
 
+    Button registrar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,9 @@ public class login extends AppCompatActivity {
         Temail = (EditText) findViewById(R.id.textEmail);
         Tpassword = (EditText) findViewById(R.id.textPassword);
         entrar = (Button) findViewById(R.id.buttonLogin);
+
+        registrar = (Button) findViewById(R.id.buttonRegistro);
+
         entrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,7 +44,11 @@ public class login extends AppCompatActivity {
                     System.out.println(data[3]);
                     System.out.println(password);
                     if (data[3].equals(password)) {
+
+                        Usuario usuario = new Usuario(data[6], data[0], data[1], data[2], data[3], data[4], data[5]);
                         Intent form = new Intent(getApplicationContext(), Pantalla_Principal.class);
+                        form.putExtra("parametro", usuario);
+
                         startActivity(form);
                     }else {
                         Toast.makeText(login.this, "Correo o contraseña incorrecta", Toast.LENGTH_SHORT).show();
@@ -54,6 +63,16 @@ public class login extends AppCompatActivity {
 
             }
         });
+
+        registrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent form = new Intent(getApplicationContext(), nuevo_user.class);
+                startActivity(form);
+
+            }
+        });
+
     }
 
     private class HttpGetEmails extends AsyncTask<String, Object, String[]> {
