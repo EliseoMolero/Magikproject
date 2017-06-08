@@ -31,6 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <activity
             android:name=".login"
             android:label="Repara Sevilla"
@@ -42,15 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".Pantalla_Principal"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
 
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".nuevo_user"
@@ -61,8 +54,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
 
         <meta-data

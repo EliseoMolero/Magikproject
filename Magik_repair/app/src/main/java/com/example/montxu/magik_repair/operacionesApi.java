@@ -14,26 +14,32 @@ public class operacionesApi {
 
     public static String[] getEmails(){
 
+
         String url="http://192.168.0.104:5001/get/emails";
+
 
 
             JSONObject jsonObject = new JSONObject();
 
             JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+
             String[] result = new String[jsonObjRecv.length()];
 
             for (int i = 0; i < jsonObjRecv.length() ; i++) {
                 try {
                     Object a = jsonObjRecv.get(String.valueOf(i));
                     result[i]=String.valueOf(a);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
+
         return result;
     }
     
+
     public static String[] getUsuario(String email){
 
         String url="http://192.168.0.104:5001/get/usuario";
@@ -71,7 +77,9 @@ public class operacionesApi {
         return result;
     }
 
+
     public static String[] getIncidencias(String email){
+
 
         String url="http://192.168.0.104:5001/get/incidencias";
 
@@ -153,7 +161,9 @@ public class operacionesApi {
 
     public static void putUsuario(String id, String nombre, String apellidos, String email, String password, String admin, String imagenPerfil){
 
+
         String url="http://192.168.0.104:5001/put/usuario";
+
         try{
 
             JSONObject jsonObject = new JSONObject();

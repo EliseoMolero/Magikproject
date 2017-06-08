@@ -123,6 +123,7 @@ public class subirIncidencias extends Fragment {
                             if (descripcion!="") {
                                 HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, dic, " ");
                                 tareaAsync.execute();
+
                                 mSendButton.setEnabled(false);
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
@@ -130,6 +131,7 @@ public class subirIncidencias extends Fragment {
                                         mSendButton.setEnabled(true);
                                     }
                                 }, 30000);
+
                             }
                             else{
                                 Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
@@ -156,6 +158,7 @@ public class subirIncidencias extends Fragment {
                             if (descripcion!="") {
                                     HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
                                     tareaAsync.execute();
+
                                 mSendButton.setEnabled(false);
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
@@ -164,6 +167,7 @@ public class subirIncidencias extends Fragment {
 
                                     }
                                 }, 30000);
+
                                 }
                                 else{
                                     Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
@@ -303,10 +307,12 @@ public class subirIncidencias extends Fragment {
             String direccion=this.direccion;
             String imagen=this.imagen;
             String longitud = lat;
+
             Intent i = getActivity().getIntent();
             Usuario miUsuario = (Usuario) i.getSerializableExtra("usuario");
             String email=miUsuario.getEmail();
             String estado = "No se ha revisado su incidencia todavia";
+
             operacionesApi.postIncidencia(descripcion, direccion, imagen, latitud, longitud, email, estado);
 
             return resultado;
