@@ -9,8 +9,17 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import static android.R.*;
 
 
 /**
@@ -21,11 +30,15 @@ import java.util.concurrent.ExecutionException;
 public class misIncidencias extends Fragment{
 
     View mView;
+    GridView gridView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.mis_incidencias, container, false );
+        gridView = (GridView) mView.findViewById(R.id.gridview);
+
+
         Intent i = getActivity().getIntent();
         Usuario miUsuario = (Usuario) i.getSerializableExtra("usuario");
         String email=miUsuario.getEmail();
@@ -33,7 +46,24 @@ public class misIncidencias extends Fragment{
         tareaAsync.execute();
         try {
             String[] incidencias = tareaAsync.get();
-            System.out.print(incidencias[0]);
+            for (int j = 0; j <incidencias.length; j++) {
+                String[] datos = new String[3];
+                Object a = incidencias[j];
+                String dic_a= a.toString();
+                dic_a = dic_a.replace("\\", "");
+                dic_a = dic_a.replace("\"","");
+                String[] b = dic_a.split(":");
+                String descripcion = b[1].split(",")[0];
+                String direccion = b[2].split(",")[0];
+                String estado = b[4].split(",")[0];
+                datos[0] = "Descripcion: "+descripcion;
+                datos[1] = "Direccion: "+direccion;
+                datos[2] = "Estado: "+estado;
+                ArrayAdapter adaptador=new ArrayAdapter(this.getContext(), layout.simple_list_item_1,datos);
+                gridView.setAdapter(adaptador);
+
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
