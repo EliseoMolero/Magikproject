@@ -108,7 +108,7 @@ def obtener_incidencias():
 			imagen = resultado[3]
 			latitud = str(resultado[4])
 			longitud = str(resultado[5])
-			estado = resultado[6]
+			estado = resultado[7]
 			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":'img', "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
 			list_data.append(data)
 		for i in list_data:
