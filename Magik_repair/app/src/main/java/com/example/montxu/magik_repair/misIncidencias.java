@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static android.R.*;
@@ -44,10 +46,11 @@ public class misIncidencias extends Fragment{
         String email=miUsuario.getEmail();
         HttpGetIncidencias tareaAsync = new HttpGetIncidencias(email);
         tareaAsync.execute();
+        final List<String> inList = new ArrayList<String>();
+
         try {
             String[] incidencias = tareaAsync.get();
             for (int j = 0; j <incidencias.length; j++) {
-                String[] datos = new String[3];
                 Object a = incidencias[j];
                 String dic_a= a.toString();
                 dic_a = dic_a.replace("\\", "");
@@ -56,13 +59,16 @@ public class misIncidencias extends Fragment{
                 String descripcion = b[1].split(",")[0];
                 String direccion = b[2].split(",")[0];
                 String estado = b[4].split(",")[0];
-                datos[0] = "Descripcion: "+descripcion;
-                datos[1] = "Direccion: "+direccion;
-                datos[2] = "Estado: "+estado;
-                ArrayAdapter adaptador=new ArrayAdapter(this.getContext(), layout.simple_list_item_1,datos);
-                gridView.setAdapter(adaptador);
+                inList.add(inList.size(),"Descripcion: "+descripcion);
+                inList.add(inList.size(),"Direccion: "+direccion);
+                inList.add(inList.size(),"Estado: "+estado);
+                inList.add(inList.size(),"----------------------------------------");
+
+
 
             }
+            ArrayAdapter adaptador=new ArrayAdapter(this.getContext(), layout.simple_list_item_1,inList);
+            gridView.setAdapter(adaptador);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
