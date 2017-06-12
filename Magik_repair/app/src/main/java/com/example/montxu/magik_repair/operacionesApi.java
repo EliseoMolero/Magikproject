@@ -80,8 +80,7 @@ public class operacionesApi {
 
     public static String[] getIncidencias(String email){
 
-
-        String url="http://192.168.0.104:5001/get/incidencias";
+        String url="http://192.168.0.105:5001/get/incidencias";
 
 
         JSONObject jsonObject = new JSONObject();
@@ -113,7 +112,7 @@ public class operacionesApi {
 
     public static void postIncidencia(String descripcion, String direccion, String imagen, String latitud, String longitud, String email, String estado){
 
-        String url="http://192.168.0.104:5001/post/incidencias";
+        String url="http://192.168.0.105:5001/post/incidencias";
         try{
 
             JSONObject jsonObject = new JSONObject();
@@ -134,7 +133,6 @@ public class operacionesApi {
             e.printStackTrace();
         }
     }
-
 
     public static void postUsuario(String nombre, String apellidos, String email, String password, String admin, String imagenPerfil){
 
