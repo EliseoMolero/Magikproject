@@ -6,64 +6,67 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Formulario</title>
-    <meta charset="utf-8">
-    <link href="estilos/estiloFormularioRegistro.css" rel="stylesheet" type="text/css"/>
-</head>
- 
-<body>
-    
-   
+    <head>
+        <title>Formulario</title>
+        <meta charset="utf-8">
+        <link href="estilos/estiloFormularioRegistro.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+
+
 
         <div>            
             <img id="fondaso" src="imagenes/fondo-sevilla.jpg" alt=""/>
             <div id="fondogris"></div>
         </div>
-    
-    <div id="registrar">
-            
-    </div>
-    <div id="envoltura">
-        <div id="contenedor">
- 
-            <div id="cabecera">
-                REGISTRARSE
-            </div>
- 
-            <div id="cuerpo">
- 
-                <form id="form-login" action="#" method="post" >
-                    <p><label for="nombre">Nombre*:</label></p>
+
+        <div id="registrar">
+
+        </div>
+        <div id="envoltura">
+            <div id="contenedor">
+
+                <div id="cabecera">
+                    <div>
+                        <img src="imagenes/logoReparaSevilla.png" width="320" height="60" alt=""/>
+                    </div>
+                    <p style="color: black;"><b>REGISTRARSE</b></p>
+                </div>
+
+                <div id="cuerpo">
+
+                    <form id="form-login" action="#" method="post" >
+                        <p><label for="nombre">Nombre*:</label></p>
                         <input name="nombre" type="text" id="nombre" class="nombre" placeholder="Escriba su Nombre" autofocus=""/></p>
- </br>
-                    <!--=============================================================================================-->
-                    <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
-                    <!--Puedes usar tantas como necesites-->
-                    <p><label for="apellidos">Apellidos*:</label></p>
+                        </br>
+                        <!--=============================================================================================-->
+                        <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
+                        <!--Puedes usar tantas como necesites-->
+                        <p><label for="apellidos">Apellidos*:</label></p>
                         <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Escriba sus Apellidos" /></p>
-                    <!--=============================================================================================-->
- </br>
-                    <p><label for="correo">Email*:</label></p>
+                        <!--=============================================================================================-->
+                        </br>
+                        <p><label for="correo">Email*:</label></p>
                         <input name="correo" type="text" id="correo" class="correo" placeholder="Escriba su Email" /></p>
- </br>
-                    <p><label for="pass">Contraseña*:</label></p>
-                    <p style="color: red;font-size: 10px" > (Debe contener mayúscula, minúscula y número)</p>
+                        </br>
+                        <p><label for="pass">Contraseña*:</label></p>
+                        <p style="color: red;font-size: 10px" > (Debe contener mayúscula, minúscula y número)</p>
                         <input name="pass" type="password" id="pass" class="pass" placeholder="Escriba su Contraseña" /></p>
- </br>
-                    <p><label for="repass">Confirmar Contraseña*:</label></p>
+                        </br>
+                        <p><label for="repass">Confirmar Contraseña*:</label></p>
                         <input name="repass" type="password" id="repass" class="repass" placeholder="Repita su Contraseña" /></p>
- 
-    <p style="color: red">(*)Campos obligatorios</p>
-                    <p id="bot"><input name="submit" type="submit" id="boton" value="Registrar" class="boton"/></p>
-                </form>
-            </div>
- 
-            <div id="pie">¿Eres usuario de <b>ReparaSevilla</b>? <br /><a href="index.html">Inicia sesión aquí</a></div>
-        </div><!-- fin contenedor -->
- 
-    </div>
- 
-</body>
- 
+
+                        <p style="color: red">(*)Campos obligatorios</p>
+                        <p id="bot"><input name="submit" type="submit" id="boton" value="Registrar" class="boton"/></p>
+                    </form>
+                </div>
+
+                <div id="pie">¿Eres usuario de <b>ReparaSevilla</b>? <br /><a href="index.html">Inicia sesión aquí</a></div>
+            </div><!-- fin contenedor -->
+
+        </div>
+
+    </body>
+
 </html>
