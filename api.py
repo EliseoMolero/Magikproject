@@ -7,7 +7,7 @@ app = Flask(__name__)
 db = MySQLdb.connect(host="localhost", user="root", passwd="toor", db="magikproyectBD")
 
 
-@app.route('/get/emails', methods=['GET', 'POST'])
+@app.route('/get/emails', methods=['POST', 'GET'])
 def obtener_emails():
 	cursor = db.cursor()
 	try:
@@ -15,14 +15,47 @@ def obtener_emails():
 		data = {}
 		sql = """SELECT email FROM Usuario;"""
 		cursor.execute(sql)
-		resultados = cursor.fetchone()
+		resultados = cursor.fetchall()
 		list_resultados = list(resultados)
 		for i in list_resultados:
-			data +={"'"+count+"'":i}
+			name = str(count)
+			data[name]=i
 			count +=1
 		cursor.close()
+		print data
 		return json.dumps(data)
 	except:
+		cursor.close()
+		return "Unable to insert data on database."
+
+
+@app.route('/get/fincidencias', methods=['POST', 'GET'])
+def obtener_fincidencia():
+	cursor = db.cursor()
+	try:
+		count = 0
+		data = {}
+		sql = """SELECT * FROM Incidencias;"""
+		cursor.execute(sql)
+		resultados = cursor.fetchall()
+		list_data=[]
+		dict_data = {}
+		count = 0
+		for resultado in resultados:
+			ids= resultado[0]
+			descripcion = resultado[1]
+			direccion = resultado[2]
+			estado = resultado[6]
+			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "estado":estado}
+			list_data.append(data)
+		for i in list_data:
+			name = str(count)
+			dict_data[name]=json.dumps(i)
+			count +=1
+		cursor.close()
+		return json.dumps(dict_data)
+	except:
+		print 'peta'
 		cursor.close()
 		return "Unable to insert data on database."
 
@@ -30,8 +63,8 @@ def obtener_emails():
 
 @app.route('/get/usuario', methods=['GET', 'POST'])
 def obtener_usuario():
-		cursor = db.cursor()
-	#try:
+	cursor = db.cursor()
+	try:
 		data= dict()
 		r = request.get_json()
 		email = r.get("email")
@@ -50,22 +83,24 @@ def obtener_usuario():
 		print data
 		cursor.close()
 		return json.dumps(data)
-#	except:
-#		print 'peta'
-#		cursor.close()
-#		return "Unable to insert data on database."
+	except:
+		cursor.close()
+		data={"id":'',"nombre":'', "apellidos":'', "email":'', "password":'', "admin":'', "imagenPerfil":''}
+		return json.dumps(data)
 
 
 @app.route('/get/incidencias', methods=['POST'])
 def obtener_incidencias():
 	cursor = db.cursor()
 	try:
+		dict_data ={}
 		r = request.get_json()
 		email = r.get("email")
 		sql = "SELECT * FROM Incidencias WHERE email='"+email+"'"";"
 		cursor.execute(sql)
 		resultados = cursor.fetchall()
 		list_data=[]
+		count = 0
 		for resultado in resultados:
 			ids= resultado[0]
 			descripcion = resultado[1]
@@ -74,10 +109,14 @@ def obtener_incidencias():
 			latitud = str(resultado[4])
 			longitud = str(resultado[5])
 			estado = resultado[6]
-			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":imagen, "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
+			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":'img', "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
 			list_data.append(data)
+		for i in list_data:
+			name = str(count)
+			dict_data[name]=json.dumps(i)
+			count +=1
 		cursor.close()
-		return json.dumps(list_data)
+		return json.dumps(dict_data)
 	except:
 		cursor.close()
 		return "Unable to insert data on database."
@@ -105,7 +144,7 @@ def insertar_usuario():
 		return "Successfully inserted on database."
 
 
-@app.route('/post/incidencias', methods=['POST'])
+@app.route('/post/incidencias', methods=['POST', 'GET'])
 def insertar_incidencias():
 		cursor = db.cursor()
 		r = request.get_json()
