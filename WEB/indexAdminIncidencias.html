@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html><head>
+        <title>Formulario</title>
+        <meta charset="utf-8">
+        <link href="estilos/estiloAdminIncidencias.css" rel="stylesheet" type="text/css">
+        <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+    </head>
+
+    <body>
+
+        <script>
+            function myMap() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(51.5, -0.12),
+                    zoom: 10,
+                    mapTypeId: google.maps.MapTypeId.HYBRID
+                }
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            }
+        </script>
+
+        <ul>
+            <li><a href="indexInicio.html">Inicio</a></li>
+            <li><a href="indexSubirIncidencia.html">Subir Incidencia</a></li>
+            <li><a href="indexMisIncidencias.html">Mis Incidencias</a></li>
+            <li><a href="indexMapaIncidencias.html">Mapa de Incidencias</a></li>
+            <li><a href="indexEditarPerfil.html">Mi Perfil</a></li>
+            <li><a href="index.html">Cerrar sesión</a></li>
+            <li style="background-color: #333;color:#e0e0e0;"><a style="background-color: #333;color:#e0e0e0;" href="indexAdminIncidencias.html">Panel ADMIN</a></li>
+        </ul>
+
+        <div>            
+            <img id="fondaso" src="imagenes/fondo-sevilla.jpg" alt=""/>
+            <div id="fondogris"></div>
+        </div>
+
+        <div id="registrar">
+
+        </div>
+        <div id="envoltura">
+            <div id="contenedor">
+
+                <div id="cabecera">
+                    PANEL DE INCIDENCIAS [ADMIN]
+                </div>
+
+                <div id="contenedorscroll">
+                    <div id="cuerpo">
+
+
+                        <table border="0">
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div id="incidencia" style="/*margin-left: 80px;*/
+                                             border-radius: 10px 10px 10px 10px;
+                                             -moz-border-radius: 10px 10px 10px 10px;
+                                             -webkit-border-radius: 10px 10px 10px 10px;
+                                             border: 4px solid #333;
+                                             background: #ffa191;
+                                             ">
+
+                                            <table id="tablaincidencias" border="0">
+                                                <tbody>
+                                                    <tr colspan="2">
+                                                        <td>
+                                                            <p><label><b>Nº de Incidencia: </b></label><br />
+                                                                <label for="numeroincidencia">1312</label>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr colspan="2">
+                                                        <td>
+                                                            <p><label><b>Dirección: </b></label><br />
+                                                                <label for="direccion">c/ Falsa, 123</label>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr colspan="2">
+                                                        <td>
+                                                            <label><b>Descripción: </b></label><br />
+                                                            <label for="descripcion">Banco roto junto a al estadio nacional de petanca esta roto y pintado de grafiti gracias</label>
+                                                            <br />
+                                                        </td>
+                                                    </tr>
+                                                    <tr colspan="2">
+                                                        <td><br />
+                                                            <p><label for="estado"><b>Estado: </b></label></p>                                                        
+                                                            <label for="estado" style="color: green;">¡Reparado!</label>
+                                                            <br /><br />
+                                                        </td>
+                                                    </tr>
+                                                    <tr colspan="2">
+                                                        <td>
+                                                            <p><label for="foto"><b>Foto: </b></label></p>
+                                                            <p><img style="margin-left: 80px;
+                                                                    border-radius: 25px 25px 25px 25px;
+                                                                    -moz-border-radius: 25px 25px 25px 25px;
+                                                                    -webkit-border-radius: 25px 25px 25px 25px;
+                                                                    border: 4px solid #333;" src="imagenes/soldiermasks.jpg" height="130px" width="230px"></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr colspan="2">
+                                                        <td>
+                                                            <p><label for="ubicacion"><b>Ubicación:</b></label></p>
+                                                            <br>
+                                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" style="border:0" allowfullscreen="" frameborder="0" height="150" width="390"></iframe>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                <div>
+                                                    <table id="panelmodificar" border="0">                                                    
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><SELECT id="selector" NAME="selEstado"  >
+                                                                        <OPTION VALUE="" style="color: black;">Seleccione Estado</OPTION>
+                                                                        <OPTION VALUE="Descartado" style="color: red;">Descartado</OPTION>
+                                                                        <OPTION VALUE="En Revisión" style="color: yellow;">En Revisión</OPTION>
+                                                                        <OPTION VALUE="En Reparacion" style="color: blue;">En Reparación</OPTION>
+                                                                        <OPTION VALUE="Reparado" style="color: green;">¡Reparado! </OPTION> 
+                                                                    </SELECT> </td>
+                                                                <td><button id="modificarincidencia" class="boton">Modificar estado</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="incidencia" style="/*margin-left: 80px;*/
+                                                             border-radius: 10px 10px 10px 10px;
+                                                             -moz-border-radius: 10px 10px 10px 10px;
+                                                             -webkit-border-radius: 10px 10px 10px 10px;
+                                                             border: 4px solid #333;
+                                                             background: #ffa191;
+                                                             ">
+
+                                                            <table id="tablaincidencias" border="0">
+                                                                <tbody>
+                                                                    <tr colspan="2">
+                                                                        <td>
+                                                                            <p><label><b>Nº de Incidencia: </b></label><br />
+                                                                                <label for="numeroincidencia">1312</label>
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr colspan="2">
+                                                                        <td>
+                                                                            <p><label><b>Dirección: </b></label><br />
+                                                                                <label for="direccion">c/ Falsa, 123</label>
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr colspan="2">
+                                                                        <td>
+                                                                            <label><b>Descripción: </b></label><br />
+                                                                            <label for="descripcion">Banco roto junto a al estadio nacional de petanca esta roto y pintado de grafiti gracias</label>
+                                                                            <br />
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr colspan="2">
+                                                                        <td><br />
+                                                                            <p><label for="estado"><b>Estado: </b></label></p>                                                        
+                                                                            <label for="estado" style="color: green;">¡Reparado!</label>
+                                                                            <br /><br />
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr colspan="2">
+                                                                        <td>
+                                                                            <p><label for="foto"><b>Foto: </b></label></p>
+                                                                            <p><img style="margin-left: 80px;
+                                                                                    border-radius: 25px 25px 25px 25px;
+                                                                                    -moz-border-radius: 25px 25px 25px 25px;
+                                                                                    -webkit-border-radius: 25px 25px 25px 25px;
+                                                                                    border: 4px solid #333;" src="imagenes/soldiermasks.jpg" height="130px" width="230px"></p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr colspan="2">
+                                                                        <td>
+                                                                            <p><label for="ubicacion"><b>Ubicación:</b></label></p>
+                                                                            <br>
+                                                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" style="border:0" allowfullscreen="" frameborder="0" height="150" width="390"></iframe>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                <div>
+                                                                    <table id="panelmodificar" border="0">                                                    
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td><SELECT id="selector" NAME="selEstado"  >
+                                                                                        <OPTION VALUE="" style="color: black;">Seleccione Estado</OPTION>
+                                                                                        <OPTION VALUE="Descartado" style="color: red;">Descartado</OPTION>
+                                                                                        <OPTION VALUE="En Revisión" style="color: yellow;">En Revisión</OPTION>
+                                                                                        <OPTION VALUE="En Reparacion" style="color: blue;">En Reparación</OPTION>
+                                                                                        <OPTION VALUE="Reparado" style="color: green;">¡Reparado! </OPTION> 
+                                                                                    </SELECT> </td>
+                                                                                <td><button id="modificarincidencia" class="boton">Modificar estado</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                </td>
+                                                                </tr>
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        </div>
+                                                        <div id="pie">ReparaSevilla</div>
+                                                        </div>
+
+                                                        </div>
+                                                        </body></html>

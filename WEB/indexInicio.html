@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html><head>
+        <title>Formulario</title>
+        <meta charset="utf-8">
+        <link href="estilos/estiloInicio.css" rel="stylesheet" type="text/css"/>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+    </head>
+
+    <body background="">
+
+        <script>
+            function myMap() {
+                var mapOptions = {
+                    center: new google.maps.LatLng(51.5, -0.12),
+                    zoom: 10,
+                    mapTypeId: google.maps.MapTypeId.HYBRID
+                }
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            }
+        </script>
+
+        <ul>
+            <li style="background-color: #333;color:#e0e0e0;"><a style="background-color: #333;color:#e0e0e0;" href="indexInicio.html">Inicio</a></li>
+            <li><a href="indexSubirIncidencia.html">Subir Incidencia</a></li>
+            <li><a href="indexMisIncidencias.html">Mis Incidencias</a></li>
+            <li><a href="indexMapaIncidencias.html">Mapa de Incidencias</a></li>
+            <li><a href="indexEditarPerfil.html">Mi Perfil</a></li>
+            <li><a href="index.html">Cerrar sesión</a></li>
+            <li><a href="indexAdminIncidencias.html">Panel ADMIN</a></li>
+        </ul>
+
+        <div>            
+            <img id="fondaso" src="imagenes/fondo-sevilla.jpg" alt=""/>
+            <div id="fondogris"></div>
+        </div>
+
+        <div id="registrar">
+
+        </div>
+        <div id="envoltura">
+            <div id="contenedor">
+
+                <div id="cabecera">
+                    INICIO
+                </div>
+
+
+                <div id="cuerpo">
+                    <table id="menuinicio" border="0">
+
+                        <tbody>
+                            <tr>
+                                <td>
+                                    
+                                        <a href="indexInicio.html">
+                                            <div id="continicio">
+                                                <p style="color: black;">Inicio</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/home_icon-icons.com_73532.png" alt=""/>
+                                        </div>
+                                        </a>                                        
+                                    
+                                </td>
+                                <td>
+                                    <a href="indexSubirIncidencia.html">
+                                    <div id="continicio">
+                                        
+                                        <p style="color: black;">Subir Incidencia</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/warning-black-triangular-signal-with-exclamation-sign-inside_icon-icons.com_64273.png" alt=""/>
+                                        
+                                    </div>
+                                        </a>
+                                </td>
+                                <td>
+                                    <a href="indexMisIncidencias.html">
+                                    <div id="continicio">
+                                        
+                                        <p style="color: black;">Mis Incidencias</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/list_icon-icons.com_58877.png" alt=""/>
+                                        
+                                    </div>
+                                        </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="indexMapaIncidencias.html">
+                                    <div id="continicio">
+                                        
+                                        <p style="color: black;">Mapa de Incidencias</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/map-grid-with-placeholder-interface-symbol_icon-icons.com_56711.png" alt=""/>
+                                        
+                                    </div>
+                                        </a>
+                                </td>
+                                <td>
+                                    <a href="indexEditarPerfil.html">
+                                    <div id="continicio">
+                                        
+                                            <p style="color: black;">Mi Perfil</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/male-profile-picture_icon-icons.com_68388.png" alt=""/>
+                                        
+                                    </div>
+                                        </a>
+                                </td>
+                                <td>
+                                    <a href="index.html">
+                                    <div id="continicio">
+                                        
+                                            <p style="color: black;">Cerrar sesión</p>
+                                            <img width="100px" height="100px" src="imagenesInicio/log-in_icon-icons.com_50107.png" alt=""/>
+                                        
+                                    </div>
+                                        </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <div id="pie">Bienvenido a <b>ReparaSevilla</b></div>
+            </div><!-- fin contenedor -->
+            <!--fondo gris-->
+        </div>
+
+
+
+
+    </body></html>
