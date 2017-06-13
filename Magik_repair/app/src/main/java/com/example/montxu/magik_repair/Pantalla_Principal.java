@@ -147,8 +147,7 @@ public class Pantalla_Principal extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new subirIncidencias()).commit();
         } else if (id == R.id.salir) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new subirIncidencias()).commit();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
