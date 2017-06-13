@@ -43,7 +43,14 @@
             </intent-filter>
         </activity>
 
-
+        <activity
+            android:name=".Pantalla_Principal"
+            android:label="Repara Sevilla"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".nuevo_user"
