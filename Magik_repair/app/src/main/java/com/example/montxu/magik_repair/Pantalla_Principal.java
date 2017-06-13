@@ -3,6 +3,8 @@ package com.example.montxu.magik_repair;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.AsyncTask;
@@ -26,17 +28,31 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
 public class Pantalla_Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     SupportMapFragment spm;
     RelativeLayout frl;
-    Button mOptionButton;
+    int size;
+    double longitud;
+    double latitud;
+    ArrayList<String> direccion = new ArrayList<String>();;
+    ArrayList<String> descripcion = new ArrayList<String>();;
+    Marker marka;
+    ArrayList<String> estado = new ArrayList<String>();;
 
     final int MY_PERMISSIONS = 100;
 
@@ -133,6 +149,19 @@ public class Pantalla_Principal extends AppCompatActivity
 
         } else if (id == R.id.mapaIncidencia) {
             if(!spm.isAdded()) {
+                String[] finci=getFinci();
+                for (int i = 0; i < finci.length; i++) {
+                    Object a = finci[i];
+                    String dic_a= a.toString();
+                    dic_a = dic_a.replace("\\", "");
+                    dic_a = dic_a.replace("\"","");
+                    String[] b = dic_a.split(":");
+                    this.descripcion.add(b[1].split(",")[0]);
+                    this.direccion.add(b[2].split(",")[0]+", Sevilla");
+                    this.estado.add(b[3].split(",")[0]);
+
+                }
+                this.size=finci.length;
                 fmm.beginTransaction().add(R.id.map, spm).commit();
             }else{
                 fmm.beginTransaction().show(spm).commit();
@@ -225,28 +254,71 @@ public class Pantalla_Principal extends AppCompatActivity
     }
 
 
+    public String[] getFinci(){
+        HttpGetFincidencias tareaAsync = new HttpGetFincidencias();
+        tareaAsync.execute();
+
+
+        try {
+            System.out.println("Empieza RECIBIR APP");
+            String[] gdata = tareaAsync.get();
+            return gdata;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng i1 = new LatLng(37.387094, -5.971877);
-        LatLng i2 = new LatLng(37.379156, -5.972904);
-        LatLng i3 = new LatLng(37.380166, -5.971464);
-        CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(i2, 14);
+        //mMap = googleMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        Geocoder geocoder2 = new Geocoder(getApplicationContext());
+        for (int i = 0; i <size; i++) {
+            List<Address> direcciones2 = null;
+
+
+            try {
+                direcciones2=geocoder2.getFromLocationName(String.valueOf(direccion.get(i)),1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            latitud= direcciones2.get(0).getLatitude();
+            longitud= direcciones2.get(0).getLongitude();
+        if (latitud != 0 && longitud != 0){
+            LatLng latLng = new LatLng(latitud, longitud);
+
+            MarkerOptions markerOptions =
+                    new MarkerOptions()
+                            .position(latLng)
+                            .title(direccion.get(i))
+                            .snippet(descripcion.get(i));
+
+            marka = googleMap.addMarker(markerOptions);
+            CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+            googleMap.animateCamera(ubica);
+        }
+
+
+
+        }
+
     }
-        private class HttpGetFincidencias extends AsyncTask<String, Void, String> {
+
+        private class HttpGetFincidencias extends AsyncTask<String, Void, String[]> {
 
         String[] inci;
 
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             String[] result = operacionesApi.getFullIncidencias();
             inci=result;
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+            return inci;
         }
     }
 }
+
