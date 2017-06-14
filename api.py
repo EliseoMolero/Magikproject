@@ -88,6 +88,53 @@ def obtener_usuario():
 		data={"id":'',"nombre":'', "apellidos":'', "email":'', "password":'', "admin":'', "imagenPerfil":''}
 		return json.dumps(data)
 
+@app.route('/get/usuarioId', methods=['GET', 'POST'])
+def obtener_usuarioID():
+	cursor = db.cursor()
+	try:
+		data= dict()
+		r = request.get_json()
+		ids = r.get("id")
+		sql = "SELECT * FROM Usuario WHERE idUsuario='"+ids+"'"";"
+		cursor.execute(sql)
+		resultados = cursor.fetchone()
+		list_resultados = list(resultados)
+		email = list_resultados[3]
+		nombre = list_resultados[1]
+		apellidos = list_resultados[2]
+		password = list_resultados[4]
+		admin = list_resultados[5]
+		imagenPerfil = list_resultados[6]
+
+		data={"id":ids,"nombre":nombre, "apellidos":apellidos, "email":email, "password":password, "admin":admin, "imagenPerfil":imagenPerfil}
+		print data
+		cursor.close()
+		return json.dumps(data)
+	except:
+		cursor.close()
+		data={"id":'',"nombre":'', "apellidos":'', "email":'', "password":'', "admin":'', "imagenPerfil":''}
+		return json.dumps(data)
+
+@app.route('/get/emailId', methods=['GET', 'POST'])
+def obtener_emailID():
+	cursor = db.cursor()
+	try:
+		data= dict()
+		r = request.get_json()
+		ids = r.get("id")
+		sql = "SELECT * FROM Usuario WHERE idUsuario='"+str(ids)+"'"";"
+		cursor.execute(sql)
+		resultados = cursor.fetchone()
+		list_resultados = list(resultados)
+		email = list_resultados[3]
+		data={"email":email}
+		print data
+		cursor.close()
+		return json.dumps(data)
+	except:
+		cursor.close()
+		data={"id":'',"nombre":'', "apellidos":'', "email":'', "password":'', "admin":'', "imagenPerfil":''}
+		return json.dumps(data)
 
 @app.route('/get/incidencias', methods=['POST'])
 def obtener_incidencias():
@@ -109,7 +156,7 @@ def obtener_incidencias():
 			latitud = str(resultado[4])
 			longitud = str(resultado[5])
 			estado = resultado[7]
-			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":'img', "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
+			data={"id":ids, "descripcion":descripcion, "direccion":direccion, "imagen":imagen, "latitud":latitud, "longitud":longitud, "email":email, "estado":estado}
 			list_data.append(data)
 		for i in list_data:
 			name = str(count)
@@ -132,9 +179,15 @@ def insertar_usuario():
 		apellidos = r.get("apellidos")
 		email = r.get("email")
 		password = r.get("password")
-		admin = r.get("admin")
-		imagenPerfil = r.get("imagenPerfil")
-		sql = """INSERT INTO Usuario (nombre, apellidos, email, password, admin, imagenPerfil) VALUES ('"""+nombre+"""', '"""+apellidos+"""', '"""+email+"""', '"""+password+"""', '"""+admin+"""', '"""+imagenPerfil+"""');"""
+		try:
+			admin = r.get("admin")
+		except:
+			admin = '1'
+		try:
+			imagenPerfil = r.get("imagenPerfil")
+		except:
+			imagenPerfil = 'img'
+		sql = """INSERT INTO Usuario (nombre, apellidos, email, password, admin, imagenPerfil) VALUES ('"""+str(nombre)+"""', '"""+str(apellidos)+"""', '"""+str(email)+"""', '"""+str(password)+"""', '"""+str(admin)+"""', '"""+str(imagenPerfil)+"""');"""
 		try:
 			cursor.execute(sql)
 			db.commit()
@@ -144,7 +197,7 @@ def insertar_usuario():
 		return "Successfully inserted on database."
 
 
-@app.route('/post/incidencias', methods=['POST', 'GET'])
+@app.route('/post/incidencias', methods=['POST'])
 def insertar_incidencias():
 		cursor = db.cursor()
 		r = request.get_json()
@@ -152,16 +205,22 @@ def insertar_incidencias():
 		direccion = r.get("direccion")
 		imagen = r.get("imagen")
 		latitud = r.get("latitud")
+		if latitud == None:
+			latitud = 0
 		longitud = r.get("longitud")
+		if longitud == None:
+			longitud = 0
 		email = r.get("email")
-		estado = r.get("estado")
-		print direccion, longitud, latitud
-		sql = """INSERT INTO Incidencias (descripcion, direccion, imagen, latitud, longitud, email, estado) VALUES ('"""+descripcion+"""', '"""+direccion+"""', '"""+imagen+"""', '"""+latitud+"""', '"""+longitud+"""', '"""+email+"""','"""+estado+"""');"""
 		try:
-			cursor.execute(sql)
-			db.commit()
+			estado = r.get("estado")
 		except:
-			db.rollback()
+			estado = 'No revisado'
+		sql = """INSERT INTO Incidencias (descripcion, direccion, imagen, latitud, longitud, email, estado) VALUES ('"""+str(descripcion)+"""', '"""+str(direccion)+"""', '"""+str(imagen)+"""', '"""+str(latitud)+"""', '"""+str(longitud)+"""', '"""+str(email)+"""','"""+str(estado)+"""');"""
+#		try:
+		cursor.execute(sql)
+		db.commit()
+#		except:
+#			db.rollback()
 		cursor.close()
 		return "Successfully inserted on database."
 
@@ -176,8 +235,14 @@ def actualizar_usuario():
 		apellidos = r.get("apellidos")
 		email = r.get("email")
 		password = r.get("password")
-		admin = r.get("admin")
-		imagenPerfil = r.get("imagenPerfil")
+		try:
+			admin = r.get("admin")
+		except:
+			admin = '1'
+		try:
+			imagenPerfil = r.get("imagenPerfil")
+		except:
+			imagenPerfil = 'img'
 		sql = """UPDATE Usuario SET nombre = '"""+nombre+"""', apellidos = '"""+apellidos+"""', email = '"""+email+"""', password = '"""+password+"""', admin = '"""+admin+"""', imagenPerfil = '"""+imagenPerfil+"""' WHERE idUsuario ='"""+ids+"""';"""
 		try:
 			cursor.execute(sql)
