@@ -11,11 +11,11 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/layoutP"
@@ -28,11 +28,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Itroduce manualmente la direccion o activa tu ubicacion"
+                android:text="Introduce manualmente la dirección (o activa tu ubicación):"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="463dp" />
+                android:layout_marginTop="429dp"
+                android:textColor="#333"
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -40,11 +42,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Rellena el siguiente formulario para enviar tu incidencia"
+                android:text="Subir Incidencia"
+                android:textSize="40dp"
+                android:textColor="#000000"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintHorizontal_bias="0.506" />
 
             <Button
@@ -55,42 +59,49 @@
                 android:layout_marginLeft="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginRight="8dp"
+                android:background="#7cff72"
+                android:textColor="#000000"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="826dp"
-                app:layout_constraintHorizontal_bias="0.501" />
+                android:layout_marginTop="718dp"
+                app:layout_constraintHorizontal_bias="1.0" />
 
             <fragment
                 android:id="@+id/mapaView"
                 android:name="com.example.montxu.magik_repair.map_formulario"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:layout_marginRight="123dp"
-                android:layout_marginTop="563dp"
+                android:layout_marginRight="92dp"
+                android:layout_marginTop="511dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="118dp" />
+                android:layout_marginEnd="118dp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintHorizontal_bias="1.0" />
 
             <Button
                 android:id="@+id/Bfoto"
                 android:layout_width="114dp"
                 android:layout_height="68dp"
                 android:layout_marginStart="37dp"
-                android:text="Foto"
-                android:layout_marginLeft="37dp"
+                android:text=" Subir Foto"
+                android:background="#333"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="21dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="160dp" />
+                android:layout_marginTop="91dp" />
 
             <RelativeLayout
                 android:id="@+id/layoutF"
                 android:layout_width="196dp"
                 android:layout_height="180dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="16dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="106dp">
+                android:layout_marginTop="91dp">
 
                 <ImageView
                     android:id="@+id/fotoView"
@@ -105,14 +116,13 @@
 
             <EditText
                 android:id="@+id/cajaDir"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="342dp"
+                android:layout_height="38dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="497dp"
+                android:layout_marginTop="459dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -123,11 +133,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Descripcion de la incidencia"
+                android:text="Descripción:"
+                android:textSize="20dp"
+                android:textColor="#333"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="304dp" />
+                android:layout_marginTop="284dp"
+                app:layout_constraintHorizontal_bias="0.048" />
 
             <EditText
                 android:id="@+id/cajaDes"
@@ -135,7 +148,7 @@
                 android:layout_height="100dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="337dp"
+                android:layout_marginTop="308dp"
                 android:ems="10"
                 android:inputType="textMultiLine"
                 app:layout_constraintLeft_toLeftOf="parent"
