@@ -185,7 +185,7 @@ public class operacionesApi {
 
     public static void delIncidencias(String id){
 
-        String url="http://192.168.1.133/del/usuario";
+        String url="http://192.168.1.133:5001/del/usuario";
         try{
 
             JSONObject jsonObject = new JSONObject();
