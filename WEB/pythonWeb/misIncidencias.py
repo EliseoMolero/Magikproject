@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
-
-def main():
+import requests, json
+def main(email):
 	html = """
-
         <script>
             function myMap() {
                 var mapOptions = {
@@ -14,162 +13,17 @@ def main():
                 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
             }
         </script>
-
         <div id="registrar">
-
         </div>
         <div id="envoltura">
             <div id="contenedor">
-
                 <div id="cabecera">
                     MIS INCIDENCIAS
                 </div>
-
                 <div id="contenedorscroll">
                     <div id="cuerpo">
-
-
                         <table border="0">
-
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div id="incidencia" style="/*margin-left: 80px;*/
-                                             border-radius: 10px 10px 10px 10px;
-                                             -moz-border-radius: 10px 10px 10px 10px;
-                                             -webkit-border-radius: 10px 10px 10px 10px;
-                                             border: 4px solid #333;
-                                             background: #ffa191;
-                                             ">
-
-                                            <table id="tablaincidencias" border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label><b>Dirección: </b></label><br />
-                                                                <label for="direccion">c/ Falsa, 123</label>
-                                                            </p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label><b>Descripción: </b></label><br />
-                                                            <label for="descripcion">Banco roto junto a al estadio nacional de petanca esta roto y pintado de grafiti gracias</label>
-                                                            <br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><br />
-                                                            <p><label for="estado"><b>Estado: </b></label></p>                                                        
-                                                            <label for="estado" style="color: green;">¡Reparado!</label>
-                                                            <br /><br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label for="foto"><b>Foto: </b></label></p>
-                                                            <p><img style="margin-left: 80px;
-                                                                    border-radius: 25px 25px 25px 25px;
-                                                                    -moz-border-radius: 25px 25px 25px 25px;
-                                                                    -webkit-border-radius: 25px 25px 25px 25px;
-                                                                    border: 4px solid #333;" src="imagenes/soldiermasks.jpg" height="130px" width="230px"></p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label for="ubicacion"><b>Ubicación:</b></label></p>
-                                                            <br>
-                                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" style="border:0" allowfullscreen="" frameborder="0" height="150" width="390"></iframe>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-
-
-
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div id="incidencia" style="/*margin-left: 80px;*/
-                                             border-radius: 10px 10px 10px 10px;
-                                             -moz-border-radius: 10px 10px 10px 10px;
-                                             -webkit-border-radius: 10px 10px 10px 10px;
-                                             border: 4px solid #333;
-                                             background: #ffa191;
-                                             ">
-
-                                            <table id="tablaincidencias" border="0">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label><b>Dirección: </b></label><br />
-                                                                <label for="direccion">c/ Falsa, 123</label>
-                                                            </p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <label><b>Descripción: </b></label><br />
-                                                            <label for="descripcion">Banco roto junto a al estadio nacional de petanca esta roto y pintado de grafiti gracias</label>
-                                                            <br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><br />
-                                                            <p><label for="estado"><b>Estado: </b></label></p>                                                        
-                                                            <label for="estado" style="color: yellow;">En Revisión</label>
-                                                            <br /><br />
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label for="foto"><b>Foto: </b></label></p>
-                                                            <p><img style="margin-left: 80px;
-                                                                    border-radius: 25px 25px 25px 25px;
-                                                                    -moz-border-radius: 25px 25px 25px 25px;
-                                                                    -webkit-border-radius: 25px 25px 25px 25px;
-                                                                    border: 4px solid #333;" src="imagenes/soldiermasks.jpg" height="130px" width="230px"></p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <p><label for="ubicacion"><b>Ubicación:</b></label></p>
-                                                            <br>
-                                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" style="border:0" allowfullscreen="" frameborder="0" height="150" width="390"></iframe>
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-
-
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-
-                <div id="pie">
-                    <div>
-                        <img src="http://i.imgur.com/dJ6OiJk.png" width="120" height="25" alt=""/>
-                    </div>
-                </div>
-            </div><!-- fin contenedor -->
-            <!--fondo gris-->
-        </div>
-
-
-
-
     """
 	css = """<style>
 body{
@@ -386,5 +240,88 @@ li a:hover {
 
 }
 </style>"""
+
+	json_mail = {'email':email}
+	ru = requests.post('http://192.168.0.105:5001/get/incidencias', json=json_mail)
+	dic_incidencias = ru.content
+	list_incidencias = json.loads(dic_incidencias)
+	list_dic = []
+	for i in range(len(list_incidencias)-1):
+		list_dic.append(str(list_incidencias.get(str(i))))
+	for dics in list_dic:
+		dic = json.loads(dics)
+		html += """<tr>
+                                    <td>
+                                        <div id="incidencia" style="/*margin-left: 80px;*/
+                                             border-radius: 10px 10px 10px 10px;
+                                             -moz-border-radius: 10px 10px 10px 10px;
+                                             -webkit-border-radius: 10px 10px 10px 10px;
+                                             border: 4px solid #333;
+                                             background: #ffa191;
+                                             ">
+
+                                            <table id="tablaincidencias" border="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p><label><b>Dirección: </b></label><br />
+                                                                <label for="direccion">"""+str(dic['direccion'])+"""</label>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label><b>Descripción: </b></label><br />
+                                                            <label for="descripcion">"""+str(dic['descripcion'])+"""</label>
+                                                            <br />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><br />
+                                                            <p><label for="estado"><b>Estado: </b></label></p>                                                        
+                                                            <label for="estado" style="color: green;">"""+str(dic['estado'])+"""</label>
+                                                            <br /><br />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <p><label for="foto"><b>Foto: </b></label></p>
+                                                            <p><img style="margin-left: 80px;
+                                                                    border-radius: 25px 25px 25px 25px;
+                                                                    -moz-border-radius: 25px 25px 25px 25px;
+                                                                    -webkit-border-radius: 25px 25px 25px 25px;
+                                                                    border: 4px solid #333;" src='"""+str(dic['imagen'])+"""' height="130px" width="230px"></p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <p><label for="ubicacion"><b>Ubicación:</b></label></p>
+                                                            <br>
+                                                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d"""+str(dic['latitud'])+"""!3d"""+str(dic['longitud'])+"""!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" style="border:0" allowfullscreen="" frameborder="0" height="150" width="390"></iframe>
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>"""
+
+	html += """
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div id="pie">
+                    <div>
+                        <img src="http://i.imgur.com/dJ6OiJk.png" width="120" height="25" alt=""/>
+                    </div>
+                </div>
+            </div><!-- fin contenedor -->
+            <!--fondo gris-->
+        </div>
+"""
 
 	return css + html
