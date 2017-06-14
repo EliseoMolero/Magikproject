@@ -49,10 +49,10 @@ public class Pantalla_Principal extends AppCompatActivity
     int size;
     double longitud;
     double latitud;
-    ArrayList<String> direccion = new ArrayList<String>();;
-    ArrayList<String> descripcion = new ArrayList<String>();;
+    ArrayList<String> direccion = new ArrayList<String>();
+    ArrayList<String> descripcion = new ArrayList<String>();
+    ArrayList<String> estado = new ArrayList<String>();
     Marker marka;
-    ArrayList<String> estado = new ArrayList<String>();;
 
     final int MY_PERMISSIONS = 100;
 
@@ -71,30 +71,10 @@ public class Pantalla_Principal extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        spm.getMapAsync(this);
-        
-        //HttpGetFincidencias tareaAsync = new HttpGetFincidencias();
-        //tareaAsync.execute();
-
-        //String gdata;
-        //try {
-        //    gdata = tareaAsync.get();
-        //    System.out.println(gdata);
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //} catch (ExecutionException e) {
-        //    e.printStackTrace();
-        //}
-        
+        navigationView.setNavigationItemSelectedListener(this);        
         if(mayRequestStoragePermission()) {
             Toast.makeText(getApplicationContext(), "Bienvenido a repair sevilla", Toast.LENGTH_LONG).show();
         }
-        else{
-            Toast.makeText(getApplicationContext(), "Permisos No Aceptados", Toast.LENGTH_LONG).show();
-
-        }
-
     }
 
     @Override
@@ -161,9 +141,24 @@ public class Pantalla_Principal extends AppCompatActivity
                     this.estado.add(b[3].split(",")[0]);
 
                 }
-                this.size=finci.length;
+                System.out.println(size);
+                spm.getMapAsync(this);
                 fmm.beginTransaction().add(R.id.map, spm).commit();
             }else{
+                String[] finci=getFinci();
+                for (int i = 0; i < finci.length; i++) {
+                    Object a = finci[i];
+                    String dic_a= a.toString();
+                    dic_a = dic_a.replace("\\", "");
+                    dic_a = dic_a.replace("\"","");
+                    String[] b = dic_a.split(":");
+                    this.descripcion.add(b[1].split(",")[0]);
+                    this.direccion.add(b[2].split(",")[0]+", Sevilla");
+                    this.estado.add(b[3].split(",")[0]);
+
+                }
+                this.size=finci.length;
+                spm.getMapAsync(this);
                 fmm.beginTransaction().show(spm).commit();
             }
         } else if (id == R.id.misIncidencias) {
@@ -270,11 +265,14 @@ public class Pantalla_Principal extends AppCompatActivity
         }
         return null;
     }
-
+    public void limpiarArrays(){
+            this.direccion.clear();
+            this.descripcion.clear();
+            this.estado.clear();
+        }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        //mMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         Geocoder geocoder2 = new Geocoder(getApplicationContext());
         for (int i = 0; i <size; i++) {
@@ -301,11 +299,8 @@ public class Pantalla_Principal extends AppCompatActivity
             CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(latLng, 12);
             googleMap.animateCamera(ubica);
         }
-
-
-
         }
-
+limpiarArrays();
     }
 
         private class HttpGetFincidencias extends AsyncTask<String, Void, String[]> {
