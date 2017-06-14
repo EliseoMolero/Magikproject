@@ -111,7 +111,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@mipmap/ic_launcher"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:maxWidth="200dp"
+                    android:maxHeight="200dp" />
             </RelativeLayout>
 
             <EditText
