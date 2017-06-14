@@ -1,22 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
+import requests, json
+def main(email):
 
-def main():
-	html = """
+	json_mail = {'email':email}
+	ru = requests.post('http://192.168.0.105:5001/get/incidencias', json=json_mail)
+	dic_incidencias = ru.content
+	list_incidencias = json.loads(dic_incidencias)
+	list_dic = []
+	marks = ''
+	for i in range(len(list_incidencias)-1):
+		list_dic.append(str(list_incidencias.get(str(i))))
+	for dics in list_dic:
+		dic = json.loads(dics)
+		marks += """
 
-        <script>
+map.setCenter(new GLatLng(37.3914105564361,-5.9591776906), 12);
+map.addControl(new GLargeMapControl());
+map.setMapType(G_SATELLITE_MAP);
+var point = new GPoint ("""+str(dic['longitud'])+""", """+str(dic['latitud'])+""");
+var marker = new GMarker(point);
+map.addOverlay(marker);
+"""
+	mapa = """<script>
             function myMap() {
                 var mapOptions = {
                     center: new google.maps.LatLng(51.5, -0.12),
                     zoom: 10,
                     mapTypeId: google.maps.MapTypeId.HYBRID
                 }
-                var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-            }
-        </script>
+                var map = new google.maps.Map(document.getElementById("map"), mapOptions);"""
+	script = mapa+marks+'}</script>'
+            
+
+	html = """
+
+        
 
         <div id="registrar">
-
+myMap()
+pMap()
         </div>
         <div id="envoltura">
             <div id="contenedor">
@@ -263,4 +286,4 @@ li a:hover {
 
 }
 </style>"""
-	return css+html
+	return css+script+html
