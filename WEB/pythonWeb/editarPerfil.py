@@ -15,7 +15,7 @@ def main():
 
                 <div id="cuerpo">
 
-                    <form id="form-login" action="#" method="post" >
+                    <form id="form-login" action="/okP" method="post" >
                         <p><label for="foto">Foto:</label></p>
                         <p><image style="margin-left: 80px;
                                   border-radius: 25px 25px 25px 25px;
@@ -25,7 +25,7 @@ def main():
                         <p><input name="subirimagen" type="file" /></p>
                         </br>
                         <p><label for="nombre">Nombre:</label></p>
-                        <p id="editarnombre"><input name="nombre" type="text" id="nombre" class="editar" placeholder="Escriba su Nombre" autofocus="" disabled />
+                        <p id="editarnombre"><input name="nombre" type="text" id="nombre" class="editar" placeholder="Escriba su Nombre" autofocus="" />
                             <input name="botonnombre" type="button" id="editarnombre" value="Editar" class="boton" />
                         </p>
                         </br>
@@ -33,24 +33,24 @@ def main():
                         <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
                         <!--Puedes usar tantas como necesites-->
                         <p><label for="apellidos">Apellidos:</label></p>
-                        <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Escriba sus Apellidos" disabled />
+                        <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Escriba sus Apellidos"  />
                         <input name="botonapellidos" type="button" id="editarnombre" value="Editar" class="boton"/>
                         </p>
                         <!--=============================================================================================-->
                         </br>
                         <p><label for="correo">Email:</label></p>
-                        <input name="correo" type="text" id="correo" class="correo" placeholder="Escriba su Email" disabled />
+                        <input name="email" type="text" id="correo" class="correo" placeholder="Escriba su Email"  />
                         <input name="botonemail" type="button" id="editarnombre" value="Editar" class="boton"/>
                         </p>
                         </br>
                         <p><label for="pass">Contraseña:</label></p>
                         <p style="color: red;font-size: 10px" > (Debe contener mayúscula, minúscula y número)</p>
-                        <input name="pass" type="password" id="pass" class="pass" placeholder="Escriba su Contraseña" disabled />
+                        <input name="pass" type="password" id="pass" class="pass" placeholder="Escriba su Contraseña"  />
                         <input name="botonpass" type="button" id="editarnombre" value="Editar" class="boton"/>
                         </p>
                         </br>
                         <p><label for="repass">Confirmar Contraseña:</label></p>
-                        <input name="repass" type="password" id="repass" class="repass" placeholder="Repita su Contraseña" disabled /></p>
+                        <input name="repass" type="password" id="repass" class="repass" placeholder="Repita su Contraseña"  /></p>
 
                         <p id="bot"><input name="submit" type="submit" id="boton" value="Modificar" class="boton"/></p>
                     </form>
