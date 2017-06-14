@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-def main():
+def main(email):
 	html = """<script>
             function myMap() {
                 var mapOptions = {
@@ -25,7 +25,7 @@ def main():
 
                 <div id="cuerpo">
 
-                    <form id="form-login" action="#" method="post" >
+                    <form id="form-login" action="/ok" method="post" >
                         <p><label for="nombre">Dirección*:</label></p>
                         <input name="direccion" type="text" id="direccion" class="direccion" placeholder="Escriba la Dirección de la incidencia" autofocus=""/>
                         </br></br>
@@ -37,11 +37,12 @@ def main():
                         <!--=============================================================================================-->
                         </br> </br>
                         <p><label for="correo">Descripción*:</label></p>
-                        <input name="correo" type="text" id="correo" class="correo" placeholder="Escriba la Descripción de la incidencia" />
+                        <input name="descripcion" type="text" id="correo" class="correo" placeholder="Escriba la Descripción de la incidencia" />
+<input name="email" type="text" id="correo" class="correo" value='"""+str(email)+"""' hidden="hidden" />
                         </br> </br>
                         <p><label for="pass">Ubicación*:</label></p>
                         </br>
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" width="260" height="230" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        <iframe name="mapa" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12698.051094657849!2d-5.9291452499999995!3d37.282979250000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1496169632482" width="260" height="230" frameborder="0" style="border:0" allowfullscreen></iframe>
 
                         <p style="color: red">(*)Campos obligatorios</p>
                         <p id="bot"><input name="submit" type="submit" id="boton" value="Subir Incidencia" class="boton"/></p>
