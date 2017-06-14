@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -71,6 +72,7 @@ public class subirIncidencias extends Fragment {
     String lat;
     String lng;
     String encodedImage = "Null";
+    String email ="";
 
     @Nullable
     @Override
@@ -87,7 +89,20 @@ public class subirIncidencias extends Fragment {
                 showOptions();
             }
         });
-
+        Intent i = getActivity().getIntent();
+        Usuario miU;
+        miU = (Usuario) i.getSerializableExtra("usuario");
+        String ids=miU.getIds();
+        HttpgetEmail tareaAsync2 = new HttpgetEmail(ids);
+        tareaAsync2.execute();
+        try {
+            email = tareaAsync2.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println(email);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +112,7 @@ public class subirIncidencias extends Fragment {
                 }
                 LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
                 if (location != null) {
                     lat = String.valueOf(location.getLatitude());
                     lng = String.valueOf(location.getLongitude());
@@ -120,7 +136,8 @@ public class subirIncidencias extends Fragment {
                         }
                         else{
                             if (descripcion!="") {
-                                HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, dic, " ");
+
+                                HttpPostIncidencias tareaAsync = new HttpPostIncidencias(email, encodedImage, descripcion, lat, lng, dic, " ");
                                 tareaAsync.execute();                                
 
                             }
@@ -135,7 +152,7 @@ public class subirIncidencias extends Fragment {
                 }
                 else{
                     Geocoder geocoder2 = new Geocoder(getContext());
-                    List<Address> direcciones2 = null;
+                    List<Address> direcciones2;
                     try {
                         direcciones2=geocoder2.getFromLocationName(String.valueOf(mCajaDir.getText()),1);
                         double latD= direcciones2.get(0).getLatitude();
@@ -146,8 +163,9 @@ public class subirIncidencias extends Fragment {
                         else{
                             String lat = String.valueOf(latD);
                             String lng = String.valueOf(lngD);
-                            if (descripcion!="") {
-                                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
+                            if (descripcion.equals("")) {
+
+                                    HttpPostIncidencias tareaAsync = new HttpPostIncidencias(email, encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
                                     tareaAsync.execute();
                             }else{
                                     Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
@@ -160,11 +178,6 @@ public class subirIncidencias extends Fragment {
                         Toast.makeText(getContext(), "No se a podido encontrar su direccion", Toast.LENGTH_LONG).show();
                     }
                 }
-
-
-
-
-
             }
         });
         return mView;
@@ -261,7 +274,7 @@ public class subirIncidencias extends Fragment {
                     resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                     byte[] b = baos.toByteArray();
                     this.encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                    mSetImage.setImageBitmap(bm);
+                    mSetImage.setImageBitmap(resizedBitmap);
                     break;
                 case SELECT_PICTURE:
                   Uri path = data.getData();
@@ -290,7 +303,7 @@ public class subirIncidencias extends Fragment {
                         resizedBitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
                         byte[] b2 = baos2.toByteArray();
                         this.encodedImage = Base64.encodeToString(b2, Base64.DEFAULT);
-                        mSetImage.setImageURI(path);
+                        mSetImage.setImageBitmap(resizedBitmap2);
                         break;
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -299,6 +312,7 @@ public class subirIncidencias extends Fragment {
             }
         }
     }
+
 
     private Bitmap getBitmapFromUri ( Uri uri ) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
@@ -318,14 +332,16 @@ public class subirIncidencias extends Fragment {
         String lng;
         String direccion;
         String estado;
+        String email;
 
-        public HttpPostIncidencias(String imagen, String descripcion, String lat, String lng, String direccion, String estado ) {
+        public HttpPostIncidencias(String email, String imagen, String descripcion, String lat, String lng, String direccion, String estado ) {
             this.imagen = imagen;
             this.descripcion = descripcion;
             this.lat = lat;
             this.lng = lng;
             this.direccion = direccion;
             this.estado = estado;
+            this.email=email;
         }
 
         @Override
@@ -349,7 +365,28 @@ public class subirIncidencias extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), "Espere mientras se envia la incidencia", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Su incidencia se envio", Toast.LENGTH_LONG).show();
+        }
+    }
+
+public class HttpgetEmail extends AsyncTask<String, Void, String> {
+
+        String ids;
+
+        public HttpgetEmail(String ids) {
+            this.ids = ids;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String correo;
+            correo=operacionesApi.getCorreo(ids);
+            return correo;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getContext(), "Espere mientras se envia la incidencia", Toast.LENGTH_SHORT).show();
         }
     }
 
