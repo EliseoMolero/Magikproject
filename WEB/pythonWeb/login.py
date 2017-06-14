@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
-
+import requests, json
 def main():
 	html = """<div>            
             <img id="fondaso" src="http://i.imgur.com/eDF2PAt.jpg" alt=""/>
@@ -25,7 +25,7 @@ def main():
                         </br></br></br>
                         <p><label>Contraseña:</label></p>
                         <input name="pass" type="password" id="pass" placeholder="Introduzca su Contraseña" required=""/>
-                        <p id="bot"><input type="submit" id="submit" name="submit" value="Ingresar" class="boton"></p>
+                        <p id="bot"><input type="submit" id="submit" name="submit" value="Ingresar" class="boton" ></p>
                     </form>
                 </div><!--fin cuerpo-->
                 <div id="pie">¿No eres usuario de <b>ReparaSevilla</b>? <a href="formularioRegistro">Regístrate aquí</a></div>
