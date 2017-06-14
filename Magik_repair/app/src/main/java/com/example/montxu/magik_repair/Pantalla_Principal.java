@@ -141,7 +141,7 @@ public class Pantalla_Principal extends AppCompatActivity
                     this.estado.add(b[3].split(",")[0]);
 
                 }
-                System.out.println(size);
+                this.size=finci.length;
                 spm.getMapAsync(this);
                 fmm.beginTransaction().add(R.id.map, spm).commit();
             }else{
