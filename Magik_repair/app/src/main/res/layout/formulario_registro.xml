@@ -226,7 +226,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="351dp"
                 android:layout_height="87dp"
-                app:srcCompat="@drawable/logoReparaSevilla"
+                app:srcCompat="@drawable/logoreparasevilla"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
