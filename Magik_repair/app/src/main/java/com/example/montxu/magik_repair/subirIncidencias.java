@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,7 +65,6 @@ public class subirIncidencias extends Fragment {
     private Button mOptionButton;
     private Button mLocationButton;
     private Button mSendButton;
-    private RelativeLayout mRlView;
     private String mPath;
     private EditText mCajaDes;
     private EditText mCajaDir;
@@ -77,7 +79,6 @@ public class subirIncidencias extends Fragment {
         mOptionButton = (Button) mView.findViewById(R.id.Bfoto);
         mSetImage = (ImageView) mView.findViewById(R.id.fotoView);
         mSendButton = (Button) mView.findViewById(R.id.Benviar);
-        mRlView = (RelativeLayout) mView.findViewById(R.id.layoutF);
         mCajaDes = (EditText) mView.findViewById(R.id.cajaDes);
         mCajaDir = (EditText) mView.findViewById(R.id.cajaDir);
         mOptionButton.setOnClickListener(new View.OnClickListener() {
@@ -93,8 +94,6 @@ public class subirIncidencias extends Fragment {
                 //MANDAR TODOO A LA API""!!
                 String descripcion = String.valueOf(mCajaDes.getText());
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-
                 }
                 LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -122,15 +121,7 @@ public class subirIncidencias extends Fragment {
                         else{
                             if (descripcion!="") {
                                 HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, dic, " ");
-                                tareaAsync.execute();
-
-                                mSendButton.setEnabled(false);
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        mSendButton.setEnabled(true);
-                                    }
-                                }, 30000);
+                                tareaAsync.execute();                                
 
                             }
                             else{
@@ -158,18 +149,7 @@ public class subirIncidencias extends Fragment {
                             if (descripcion!="") {
                                     HttpPostIncidencias tareaAsync = new HttpPostIncidencias(encodedImage, descripcion, lat, lng, String.valueOf(mCajaDir.getText()), " ");
                                     tareaAsync.execute();
-
-                                mSendButton.setEnabled(false);
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        mSendButton.setEnabled(true);
-
-                                    }
-                                }, 30000);
-
-                                }
-                                else{
+                            }else{
                                     Toast.makeText(getContext(), "Describa el tipo de incidencia", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -257,28 +237,77 @@ public class subirIncidencias extends Fragment {
                                 }
                             });
 
-                    Bitmap bm = BitmapFactory.decodeFile(mPath);
+                     Bitmap bm = BitmapFactory.decodeFile(mPath);
+                    int width = bm.getWidth();
+                    int height = bm.getHeight();
+                    int newWidth = 500;
+                    int newHeight = 500;
+
+                    // calculamos el escalado de la imagen destino
+                    float scaleWidth = ((float) newWidth) / width;
+                    float scaleHeight = ((float) newHeight) / height;
+
+                    // para poder manipular la imagen
+                    // debemos crear una matriz
+
+                    Matrix matrix = new Matrix();
+                    // resize the Bitmap
+                    matrix.postScale(scaleWidth, scaleHeight);
+
+                    // volvemos a crear la imagen con los nuevos valores
+                    Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0,
+                            width, height, matrix, true);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                     byte[] b = baos.toByteArray();
                     this.encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    mSetImage.setImageBitmap(bitmap);
+                    mSetImage.setImageBitmap(bm);
                     break;
                 case SELECT_PICTURE:
-                    Uri path = data.getData();
-                    Bitmap bm2 = BitmapFactory.decodeFile(mPath);
-                    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-                    bm2.compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
-                    byte[] b2 = baos2.toByteArray();
-                    this.encodedImage = Base64.encodeToString(b2, Base64.DEFAULT);
-                    mSetImage.setImageURI(path);
-                    break;
+                  Uri path = data.getData();
+                    try {
+                        Bitmap imagen = getBitmapFromUri (path);
+                        int width2 = imagen.getWidth();
+                        int height2 = imagen.getHeight();
+                        int newWidth2 = 500;
+                        int newHeight2 = 500;
+
+                        // calculamos el escalado de la imagen destino
+                        float scaleWidth2 = ((float) newWidth2) / width2;
+                        float scaleHeight2 = ((float) newHeight2) / height2;
+
+                        // para poder manipular la imagen
+                        // debemos crear una matriz
+
+                        Matrix matrix2 = new Matrix();
+                        // resize the Bitmap
+                        matrix2.postScale(scaleWidth2, scaleHeight2);
+
+                        // volvemos a crear la imagen con los nuevos valores
+                        Bitmap resizedBitmap2 = Bitmap.createBitmap(imagen, 0, 0,
+                                width2, height2, matrix2, true);
+                        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                        resizedBitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                        byte[] b2 = baos2.toByteArray();
+                        this.encodedImage = Base64.encodeToString(b2, Base64.DEFAULT);
+                        mSetImage.setImageURI(path);
+                        break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
             }
         }
     }
 
+    private Bitmap getBitmapFromUri ( Uri uri ) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContext().getContentResolver (). openFileDescriptor ( uri , "r" );
+        FileDescriptor fileDescriptor = parcelFileDescriptor . getFileDescriptor ();
+        Bitmap image = BitmapFactory . decodeFileDescriptor ( fileDescriptor );
+        parcelFileDescriptor . close ();
+        return image ;
+    }
 
     public class HttpPostIncidencias extends AsyncTask<String, Void, String> {
 
