@@ -22,7 +22,7 @@ def main():
 
                 <div id="cuerpo">
 
-                    <form id="form-login" action="#" method="post" >
+                    <form id="form-login" action="/inicioR" method="post" >
                         <p><label for="nombre">Nombre*:</label></p>
                         <input name="nombre" type="text" id="nombre" class="nombre" placeholder="Escriba su Nombre" autofocus=""/></p>
                         </br>
@@ -34,7 +34,7 @@ def main():
                         <!--=============================================================================================-->
                         </br>
                         <p><label for="correo">Email*:</label></p>
-                        <input name="correo" type="text" id="correo" class="correo" placeholder="Escriba su Email" /></p>
+                        <input name="email" type="text" id="correo" class="correo" placeholder="Escriba su Email" /></p>
                         </br>
                         <p><label for="pass">Contraseña*:</label></p>
                         <p style="color: red;font-size: 10px" > (Debe contener mayúscula, minúscula y número)</p>
