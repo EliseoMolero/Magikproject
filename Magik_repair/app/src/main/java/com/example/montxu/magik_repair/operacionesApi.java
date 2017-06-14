@@ -222,4 +222,56 @@ public class operacionesApi {
         return result;
     }
 
+    
+
+    public static String getCorreo(String ids){
+        String url="http://192.168.0.105:5001/get/emailId";
+        JSONObject jsonObject = new JSONObject();
+        System.out.println(ids);
+        try {
+            jsonObject.put("id", ids);
+            JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+            String[] result = new String[jsonObjRecv.length()];
+            Object a = null;
+            try {
+                a = jsonObjRecv.get("email");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            result[0]=String.valueOf(a);
+            return result[0];
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static String[] getUser(String ids){
+        String url="http://192.168.0.105:5001/get/usuarioId";
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("id", ids);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObjRecv = HttpClient.SendHttpPost(url, jsonObject);
+        String[] result = new String[jsonObjRecv.length()];
+        Object a = null;
+        try {
+            Object email = jsonObjRecv.get("email");
+            Object imagen = jsonObjRecv.get("imagenPerfil");
+            Object nombre = jsonObjRecv.get("nombre");
+            Object apellidos = jsonObjRecv.get("apellidos");
+            Object pass = jsonObjRecv.get("password");
+            result[0]=String.valueOf(email);
+            result[1]=String.valueOf(imagen);
+            result[2]=String.valueOf(nombre);
+            result[3]=String.valueOf(apellidos);
+            result[4]=String.valueOf(pass);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
