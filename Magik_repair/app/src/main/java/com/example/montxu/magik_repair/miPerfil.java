@@ -1,18 +1,21 @@
 package com.example.montxu.magik_repair;
-
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +49,7 @@ public class miPerfil extends Fragment{
     EditText emailtxt, passtxt, compasstxt, nombretxt,apellidostxt;
     TextView textopass, textoemail;
     ImageView fotoperfilview;
+    String encodedImage = " ";
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private final int SELECT_PICTURE = 300;
     private final int PHOTO_CODE = 200;
@@ -86,6 +93,28 @@ public class miPerfil extends Fragment{
         fotoperfilview.setImageURI(Uri.parse(miUsuario.getImagenPerfil()));
         botonguardar.setEnabled(true);
 
+        String ids=miUsuario.getIds();
+        HttpgetUser tareaAsyncU = new HttpgetUser(ids);
+        tareaAsyncU.execute();
+        try {
+            String[] user = tareaAsyncU.get();
+            emailtxt.setText(user[0]);
+            passtxt.setText(user[4]);
+            compasstxt.setText(user[4]);
+            nombretxt.setText(user[2]);
+            apellidostxt.setText(user[3]);
+            try {
+                byte[] decodedString = Base64.decode(user[1], Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                fotoperfilview.setImageBitmap(decodedByte);
+            }catch (Exception e){
+                System.out.println(e);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         botonemail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +166,12 @@ public class miPerfil extends Fragment{
                 String passstring=String.valueOf(passtxt.getText());
                 String nombrestring=String.valueOf(nombretxt.getText());
                 String apellidosstring=String.valueOf(apellidostxt.getText());
-                String imgstring=miUsuario.getImagenPerfil();
+                String imgstring=" ";
+                if (encodedImage.equals(" ")) {
+                    imgstring = miUsuario.getImagenPerfil();
+                }else{
+                    imgstring = encodedImage;
+                }
                 String idstring=miUsuario.getIds();
                 String adminstring=miUsuario.getAdmin();
 
@@ -152,8 +186,6 @@ public class miPerfil extends Fragment{
                 }else{
                     toastnegativo.show();
                 }
-
-            }
         });
 
         return mView;
@@ -215,6 +247,8 @@ public class miPerfil extends Fragment{
 
         if(resultCode == RESULT_OK){
             switch (requestCode){
+                if(resultCode == RESULT_OK){
+            switch (requestCode){
                 case PHOTO_CODE:
                     MediaScannerConnection.scanFile(getContext(),
                             new String[]{mPath}, null,
@@ -226,17 +260,75 @@ public class miPerfil extends Fragment{
                                 }
                             });
 
+                    Bitmap bm = BitmapFactory.decodeFile(mPath);
+                    int width = bm.getWidth();
+                    int height = bm.getHeight();
+                    int newWidth = 500;
+                    int newHeight = 500;
 
-                    Bitmap bitmap = BitmapFactory.decodeFile(mPath);
-                    fotoperfilview.setImageBitmap(bitmap);
+                    // calculamos el escalado de la imagen destino
+                    float scaleWidth = ((float) newWidth) / width;
+                    float scaleHeight = ((float) newHeight) / height;
+
+                    // para poder manipular la imagen
+                    // debemos crear una matriz
+
+                    Matrix matrix = new Matrix();
+                    // resize the Bitmap
+                    matrix.postScale(scaleWidth, scaleHeight);
+
+                    // volvemos a crear la imagen con los nuevos valores
+                    Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0,
+                            width, height, matrix, true);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    byte[] b = baos.toByteArray();
+                    this.encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                    fotoperfilview.setImageBitmap(resizedBitmap);
                     break;
                 case SELECT_PICTURE:
                     Uri path = data.getData();
-                    fotoperfilview.setImageURI(path);
-                    break;
+                    try {
+                        Bitmap imagen = getBitmapFromUri (path);
+                        int width2 = imagen.getWidth();
+                        int height2 = imagen.getHeight();
+                        int newWidth2 = 500;
+                        int newHeight2 = 500;
+
+                        // calculamos el escalado de la imagen destino
+                        float scaleWidth2 = ((float) newWidth2) / width2;
+                        float scaleHeight2 = ((float) newHeight2) / height2;
+
+                        // para poder manipular la imagen
+                        // debemos crear una matriz
+
+                        Matrix matrix2 = new Matrix();
+                        // resize the Bitmap
+                        matrix2.postScale(scaleWidth2, scaleHeight2);
+
+                        // volvemos a crear la imagen con los nuevos valores
+                        Bitmap resizedBitmap2 = Bitmap.createBitmap(imagen, 0, 0,
+                                width2, height2, matrix2, true);
+                        ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                        resizedBitmap2.compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                        byte[] b2 = baos2.toByteArray();
+                        this.encodedImage = Base64.encodeToString(b2, Base64.DEFAULT);
+                        fotoperfilview.setImageBitmap(resizedBitmap2);
+                        break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
             }
         }
+    }
+    private Bitmap getBitmapFromUri ( Uri uri ) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContext().getContentResolver (). openFileDescriptor ( uri , "r" );
+        FileDescriptor fileDescriptor = parcelFileDescriptor . getFileDescriptor ();
+        Bitmap image = BitmapFactory . decodeFileDescriptor ( fileDescriptor );
+        parcelFileDescriptor . close ();
+        return image ;
     }
 
     private class HttpPutEditarUsuario extends AsyncTask<String, Void, String> {
@@ -268,7 +360,7 @@ public class miPerfil extends Fragment{
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), resultado, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Se modifico su perfil correctamente", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -299,6 +391,22 @@ public class miPerfil extends Fragment{
             super.onPostExecute(strings);
         }
     }
+ public class HttpgetUser extends AsyncTask<String, Void, String[]> {
+
+        String ids="";
+
+        public HttpgetUser(String ids) {
+            this.ids = ids;
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+            String[] user = operacionesApi.getUser(ids);
+
+            return user;
+        }
+    }
+
 
     public boolean comprobarExistencia(String email){
 
