@@ -201,7 +201,7 @@ public class operacionesApi {
         }
     }
         public static String[] getFullIncidencias(){
-        String url="http://192.168.0.104/get/fincidencias";
+        String url="http://192.168.0.104:5001/get/fincidencias";
 
 
         JSONObject jsonObject = new JSONObject();
