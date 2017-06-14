@@ -69,11 +69,14 @@ public class Pantalla_Principal extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        android.app.FragmentManager fragmentManager = getFragmentManager();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);        
+        navigationView.setNavigationItemSelectedListener(this);
+        Usuario usuario = (Usuario)getIntent().getExtras().getSerializable("parametro");
+        getIntent().putExtra("usuario", usuario);
         if(mayRequestStoragePermission()) {
-            Toast.makeText(getApplicationContext(), "Permisos Aceptados", Toast.LENGTH_LONG).show();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new subirIncidencias()).commit();
         }
     }
 
@@ -103,7 +106,7 @@ public class Pantalla_Principal extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "AQUI SE LE PUE METER ALGO ", Toast.LENGTH_LONG).show();
+            finish();
             return true;
         }
 
@@ -112,13 +115,11 @@ public class Pantalla_Principal extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+public boolean onNavigationItemSelected(MenuItem item) {
+    int id = item.getItemId();
         android.app.FragmentManager fragmentManager = getFragmentManager();
         android.support.v4.app.FragmentManager fmm = getSupportFragmentManager();
-        Usuario usuario = (Usuario)getIntent().getExtras().getSerializable("parametro");
-        getIntent().putExtra("usuario", usuario);
+
 
         if(spm.isAdded()){
             fmm.beginTransaction().hide(spm).commit();
@@ -169,7 +170,7 @@ public class Pantalla_Principal extends AppCompatActivity
                     .replace(R.id.content_frame, new miPerfil()).commit();
         } else if (id == R.id.contactanos) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new contacto()).commit();
+                    .replace(R.id.content_frame, new subirIncidencias()).commit();
         } else if (id == R.id.salir) {
             finish();
         }
