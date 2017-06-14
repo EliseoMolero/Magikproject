@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-def main():
+def main(email):
 	html = """<script>
             function myMap() {
                 var mapOptions = {
@@ -31,7 +31,7 @@ def main():
                             <tr>
                                 <td>
                                     
-                                        <a href="inicio">
+                                        <a href="/inicioC/"""+str(email)+"""">
                                             <div id="continicio">
                                                 <p style="color: black;">Inicio</p>
                                             <img width="100px" height="100px" src="http://i.imgur.com/jmMMZBY.png" alt=""/>
@@ -40,7 +40,7 @@ def main():
                                     
                                 </td>
                                 <td>
-                                    <a href="subirIncidencia">
+                                    <a href="/subirIncidencia/"""+str(email)+"""">
                                     <div id="continicio">
                                         
                                         <p style="color: black;">Subir Incidencia</p>
@@ -50,7 +50,7 @@ def main():
                                         </a>
                                 </td>
                                 <td>
-                                    <a href="misIncidencias">
+                                    <a href="/misIncidencias/"""+str(email)+"""">
                                     <div id="continicio">
                                         
                                         <p style="color: black;">Mis Incidencias</p>
@@ -62,7 +62,7 @@ def main():
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="mapaIncidencias">
+                                    <a href="/mapaIncidencias/"""+str(email)+"""">
                                     <div id="continicio">
                                         
                                         <p style="color: black;">Mapa de Incidencias</p>
@@ -72,7 +72,7 @@ def main():
                                         </a>
                                 </td>
                                 <td>
-                                    <a href="editarPerfil">
+                                    <a href="/editarPerfil/"""+str(email)+"""">
                                     <div id="continicio">
                                         
                                             <p style="color: black;">Mi Perfil</p>
@@ -96,7 +96,6 @@ def main():
                     </table>
 
                 </div>
-
 
                 <div id="pie">Bienvenido a <b>ReparaSevilla</b></div>
             </div><!-- fin contenedor -->
