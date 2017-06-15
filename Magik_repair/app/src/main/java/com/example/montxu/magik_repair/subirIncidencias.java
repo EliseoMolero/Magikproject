@@ -385,9 +385,7 @@ public class HttpgetEmail extends AsyncTask<String, Void, String> {
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), "Espere mientras se envia la incidencia", Toast.LENGTH_SHORT).show();
-        }
+        protected void onPostExecute(String result) {}
     }
 
 }
