@@ -10,7 +10,12 @@ images = Images(app)
 
 
 def head(email):
-	return """<ul>
+	return """<head>
+        <title>Repara Sevilla</title>
+        <meta charset="utf-8">
+        
+    </head>
+<ul>
             <li><img src="http://i.imgur.com/dJ6OiJk.png" height="40" width="150" style="margin-left: 5px;" alt=""/></li>
             <li><a href="/inicioC/"""+str(email)+"""">Inicio</a></li>
             <li><a href="/subirIncidencia/"""+str(email)+""""">Subir Incidencia</a></li>
@@ -41,8 +46,6 @@ def indexinicioR():
 		email = request.form['email']
 		password = request.form['pass']
 		repass = request.form['repass']
-		print password
-		print repass
 		if password == repass:
 			json_usuario = {'nombre':nombre, 'apellidos':apellidos, 'email':email, 'password':password}
 			requests.post('http://192.168.0.105:5001/post/usuario', json=json_usuario)
@@ -112,7 +115,7 @@ def indexadminIncidencias(email):
 @app.route('/editarPerfil/<email>')
 def indexeditarPerfil(email):
 	
-	www = "<body>"+ head(email) + editarPerfil.main() + "</body>"
+	www = "<body>"+ head(email) + editarPerfil.main(email) + "</body>"
 	return www
 
 @app.route('/formularioRegistro')
@@ -125,7 +128,7 @@ def indexformularioRegistro():
 @app.route('/mapaIncidencias/<email>')
 def indexmapaIncidencias(email):
 	
-	www = "<body>"+ head(email) + mapaIncidencias.main(email) + "</body>"
+	www = "<body onLoad='myMap()'>"+ head(email) + mapaIncidencias.main(email) + "</body>"
 	return www
 
 @app.route('/misIncidencias/<email>')
