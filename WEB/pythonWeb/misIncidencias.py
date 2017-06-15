@@ -246,7 +246,7 @@ li a:hover {
 	dic_incidencias = ru.content
 	list_incidencias = json.loads(dic_incidencias)
 	list_dic = []
-	for i in range(len(list_incidencias)-1):
+	for i in range(len(list_incidencias)):
 		list_dic.append(str(list_incidencias.get(str(i))))
 	for dics in list_dic:
 		dic = json.loads(dics)
