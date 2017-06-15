@@ -216,11 +216,11 @@ def insertar_incidencias():
 		except:
 			estado = 'No revisado'
 		sql = """INSERT INTO Incidencias (descripcion, direccion, imagen, latitud, longitud, email, estado) VALUES ('"""+str(descripcion)+"""', '"""+str(direccion)+"""', '"""+str(imagen)+"""', '"""+str(latitud)+"""', '"""+str(longitud)+"""', '"""+str(email)+"""','"""+str(estado)+"""');"""
-#		try:
-		cursor.execute(sql)
-		db.commit()
-#		except:
-#			db.rollback()
+		try:
+			cursor.execute(sql)
+			db.commit()
+		except:
+			db.rollback()
 		cursor.close()
 		return "Successfully inserted on database."
 
