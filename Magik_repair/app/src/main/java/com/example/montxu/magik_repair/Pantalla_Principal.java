@@ -78,6 +78,8 @@ public class Pantalla_Principal extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, new subirIncidencias()).commit();
         }
+        fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new subirIncidencias()).commit();
     }
 
     @Override
