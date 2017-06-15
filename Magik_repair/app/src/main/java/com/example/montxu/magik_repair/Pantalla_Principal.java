@@ -49,9 +49,9 @@ public class Pantalla_Principal extends AppCompatActivity
     int size;
     double longitud;
     double latitud;
-    ArrayList<String> direccion = new ArrayList<String>();
-    ArrayList<String> descripcion = new ArrayList<String>();
-    ArrayList<String> estado = new ArrayList<String>();
+    ArrayList<String> direccion = new ArrayList<>();
+    ArrayList<String> descripcion = new ArrayList<>();
+    ArrayList<String> estado = new ArrayList<>();
     Marker marka;
 
     final int MY_PERMISSIONS = 100;
@@ -257,7 +257,6 @@ public boolean onNavigationItemSelected(MenuItem item) {
 
 
         try {
-            System.out.println("Empieza RECIBIR APP");
             String[] gdata = tareaAsync.get();
             return gdata;
         } catch (InterruptedException e) {
