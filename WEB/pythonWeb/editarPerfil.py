@@ -1,7 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
+import requests, json
+def main(email):
 
-def main():
+	json_mail = {'email':email}
+	ru = requests.post('http://192.168.0.105:5001/get/usuario', json=json_mail)
+	user_dic = ru.content
+	user_json = json.loads(user_dic)
+	nombre = user_json.get('nombre')
+	apellidos = user_json.get('apellidos')
+	imagenPerfil = user_json.get('imagenPerfil')
+	decode = imagenPerfil.decode()
 	html = """
         <div id="registrar">
 
@@ -21,11 +30,11 @@ def main():
                                   border-radius: 25px 25px 25px 25px;
                                   -moz-border-radius: 25px 25px 25px 25px;
                                   -webkit-border-radius: 25px 25px 25px 25px;
-                                  border: 4px solid #333;" src="imagenes/soldiermasks.jpg" width="100px" height="100px" /></p>
+                                  border: 4px solid #333;" src='data:image/png;base64,{0}' width="100px" height="100px" />""".format(decode)+"""</p>
                         <p><input name="subirimagen" type="file" /></p>
                         </br>
                         <p><label for="nombre">Nombre:</label></p>
-                        <p id="editarnombre"><input name="nombre" type="text" id="nombre" class="editar" placeholder="Escriba su Nombre" autofocus="" />
+                        <p id="editarnombre"><input name="nombre" type="text" id="nombre" class="editar" value='"""+str(nombre)+"""' autofocus="" />
                             <input name="botonnombre" type="button" id="editarnombre" value="Editar" class="boton" />
                         </p>
                         </br>
@@ -33,13 +42,13 @@ def main():
                         <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
                         <!--Puedes usar tantas como necesites-->
                         <p><label for="apellidos">Apellidos:</label></p>
-                        <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Escriba sus Apellidos"  />
+                        <input name="apellidos" type="text" id="apellidos" class="apellidos" value='"""+str(apellidos)+"""'  />
                         <input name="botonapellidos" type="button" id="editarnombre" value="Editar" class="boton"/>
                         </p>
                         <!--=============================================================================================-->
                         </br>
                         <p><label for="correo">Email:</label></p>
-                        <input name="email" type="text" id="correo" class="correo" placeholder="Escriba su Email"  />
+                        <input name="email" type="text" id="correo" class="correo" value='"""+str(email)+"""'  />
                         <input name="botonemail" type="button" id="editarnombre" value="Editar" class="boton"/>
                         </p>
                         </br>
