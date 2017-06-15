@@ -3,6 +3,8 @@ package com.example.montxu.magik_repair;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.AsyncTask;
@@ -26,17 +28,31 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
 public class Pantalla_Principal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     SupportMapFragment spm;
     RelativeLayout frl;
-    Button mOptionButton;
+    int size;
+    double longitud;
+    double latitud;
+    ArrayList<String> direccion = new ArrayList<>();
+    ArrayList<String> descripcion = new ArrayList<>();
+    ArrayList<String> estado = new ArrayList<>();
+    Marker marka;
 
     final int MY_PERMISSIONS = 100;
 
@@ -53,32 +69,17 @@ public class Pantalla_Principal extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        android.app.FragmentManager fragmentManager = getFragmentManager();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        spm.getMapAsync(this);
-        
-        //HttpGetFincidencias tareaAsync = new HttpGetFincidencias();
-        //tareaAsync.execute();
-
-        //String gdata;
-        //try {
-        //    gdata = tareaAsync.get();
-        //    System.out.println(gdata);
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //} catch (ExecutionException e) {
-        //    e.printStackTrace();
-        //}
-        
+        Usuario usuario = (Usuario)getIntent().getExtras().getSerializable("parametro");
+        getIntent().putExtra("usuario", usuario);
         if(mayRequestStoragePermission()) {
-            Toast.makeText(getApplicationContext(), "Bienvenido a repair sevilla", Toast.LENGTH_LONG).show();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new subirIncidencias()).commit();
         }
-        else{
-            Toast.makeText(getApplicationContext(), "Permisos No Aceptados", Toast.LENGTH_LONG).show();
-
-        }
-
+        fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, new subirIncidencias()).commit();
     }
 
     @Override
@@ -107,7 +108,7 @@ public class Pantalla_Principal extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "AQUI SE LE PUE METER ALGO ", Toast.LENGTH_LONG).show();
+            finish();
             return true;
         }
 
@@ -116,13 +117,11 @@ public class Pantalla_Principal extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+public boolean onNavigationItemSelected(MenuItem item) {
+    int id = item.getItemId();
         android.app.FragmentManager fragmentManager = getFragmentManager();
         android.support.v4.app.FragmentManager fmm = getSupportFragmentManager();
-        Usuario usuario = (Usuario)getIntent().getExtras().getSerializable("parametro");
-        getIntent().putExtra("usuario", usuario);
+
 
         if(spm.isAdded()){
             fmm.beginTransaction().hide(spm).commit();
@@ -133,8 +132,36 @@ public class Pantalla_Principal extends AppCompatActivity
 
         } else if (id == R.id.mapaIncidencia) {
             if(!spm.isAdded()) {
+                String[] finci=getFinci();
+                for (int i = 0; i < finci.length; i++) {
+                    Object a = finci[i];
+                    String dic_a= a.toString();
+                    dic_a = dic_a.replace("\\", "");
+                    dic_a = dic_a.replace("\"","");
+                    String[] b = dic_a.split(":");
+                    this.descripcion.add(b[1].split(",")[0]);
+                    this.direccion.add(b[2].split(",")[0]+", Sevilla");
+                    this.estado.add(b[3].split(",")[0]);
+
+                }
+                this.size=finci.length;
+                spm.getMapAsync(this);
                 fmm.beginTransaction().add(R.id.map, spm).commit();
             }else{
+                String[] finci=getFinci();
+                for (int i = 0; i < finci.length; i++) {
+                    Object a = finci[i];
+                    String dic_a= a.toString();
+                    dic_a = dic_a.replace("\\", "");
+                    dic_a = dic_a.replace("\"","");
+                    String[] b = dic_a.split(":");
+                    this.descripcion.add(b[1].split(",")[0]);
+                    this.direccion.add(b[2].split(",")[0]+", Sevilla");
+                    this.estado.add(b[3].split(",")[0]);
+
+                }
+                this.size=finci.length;
+                spm.getMapAsync(this);
                 fmm.beginTransaction().show(spm).commit();
             }
         } else if (id == R.id.misIncidencias) {
@@ -145,7 +172,7 @@ public class Pantalla_Principal extends AppCompatActivity
                     .replace(R.id.content_frame, new miPerfil()).commit();
         } else if (id == R.id.contactanos) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new subirIncidencias()).commit();
+                    .replace(R.id.content_frame, new contacto()).commit();
         } else if (id == R.id.salir) {
             finish();
         }
@@ -224,28 +251,70 @@ public class Pantalla_Principal extends AppCompatActivity
     }
 
 
+    public String[] getFinci(){
+        HttpGetFincidencias tareaAsync = new HttpGetFincidencias();
+        tareaAsync.execute();
+
+
+        try {
+            String[] gdata = tareaAsync.get();
+            return gdata;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public void limpiarArrays(){
+            this.direccion.clear();
+            this.descripcion.clear();
+            this.estado.clear();
+        }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng i1 = new LatLng(37.387094, -5.971877);
-        LatLng i2 = new LatLng(37.379156, -5.972904);
-        LatLng i3 = new LatLng(37.380166, -5.971464);
-        CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(i2, 14);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        Geocoder geocoder2 = new Geocoder(getApplicationContext());
+        for (int i = 0; i <size; i++) {
+            List<Address> direcciones2 = null;
+
+
+            try {
+                direcciones2=geocoder2.getFromLocationName(String.valueOf(direccion.get(i)),1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            latitud= direcciones2.get(0).getLatitude();
+            longitud= direcciones2.get(0).getLongitude();
+        if (latitud != 0 && longitud != 0){
+            LatLng latLng = new LatLng(latitud, longitud);
+
+            MarkerOptions markerOptions =
+                    new MarkerOptions()
+                            .position(latLng)
+                            .title(direccion.get(i))
+                            .snippet(descripcion.get(i));
+
+            marka = googleMap.addMarker(markerOptions);
+            CameraUpdate ubica = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+            googleMap.animateCamera(ubica);
+        }
+        }
+limpiarArrays();
     }
-        private class HttpGetFincidencias extends AsyncTask<String, Void, String> {
+
+        private class HttpGetFincidencias extends AsyncTask<String, Void, String[]> {
 
         String[] inci;
 
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             String[] result = operacionesApi.getFullIncidencias();
             inci=result;
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+            return inci;
         }
     }
 }
+

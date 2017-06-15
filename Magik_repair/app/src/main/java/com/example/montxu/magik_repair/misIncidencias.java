@@ -10,9 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -27,19 +32,47 @@ import static android.R.*;
 public class misIncidencias extends Fragment{
 
     View mView;
+    GridView gridView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.mis_incidencias, container, false );
+        gridView = (GridView) mView.findViewById(R.id.gridview);
+
+
         Intent i = getActivity().getIntent();
         Usuario miUsuario = (Usuario) i.getSerializableExtra("usuario");
         String email=miUsuario.getEmail();
         HttpGetIncidencias tareaAsync = new HttpGetIncidencias(email);
         tareaAsync.execute();
+        final List<String> inList = new ArrayList<String>();
+
         try {
             String[] incidencias = tareaAsync.get();
-            System.out.print(incidencias[0]);
+            if (incidencias.length==0){
+            inList.add(inList.size(),"Introduce tu primera incidencia en Sevilla en la pestaña subir incidencias");
+            }
+            for (int j = 0; j <incidencias.length; j++) {
+                Object a = incidencias[j];
+                String dic_a= a.toString();
+                dic_a = dic_a.replace("\\", "");
+                dic_a = dic_a.replace("\"","");
+                String[] b = dic_a.split(":");
+                String descripcion = b[1].split(",")[0];
+                String direccion = b[2].split(",")[0];
+                String estado = b[4].split(",")[0];
+                inList.add(inList.size(),"Descripcion: "+descripcion);
+                inList.add(inList.size(),"Direccion: "+direccion);
+                inList.add(inList.size(),"Estado: "+estado);
+                inList.add(inList.size(),"----------------------------------------");
+
+
+
+            }
+            ArrayAdapter adaptador=new ArrayAdapter(this.getContext(), layout.simple_list_item_1,inList);
+            gridView.setAdapter(adaptador);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

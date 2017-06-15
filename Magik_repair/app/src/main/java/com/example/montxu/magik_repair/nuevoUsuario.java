@@ -110,7 +110,7 @@ public class nuevoUsuario extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), resultado, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Bienvenido a repara Sevilla", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -166,8 +166,7 @@ public class nuevoUsuario extends Fragment {
         for(int i =0;i<data.length;i++){
             if (data[i].equals("[\""+email+"\"]")){
 
-                    textopass.setVisibility(View.INVISIBLE);
-                    textoemail.setVisibility(View.VISIBLE);
+                    
                     return false;
                 }
             }
@@ -181,11 +180,9 @@ public class nuevoUsuario extends Fragment {
 
 
         if(isNumeric(nombrestring)==true || isNumeric(apellidosstring)==true){
-            toastnegativo2.show();
             return false;
         }else{
             if(emailstring.equals("") || nombrestring.equals("") || apellidosstring.equals("")){
-                toastnegativo.show();
                 return false;
             }else{
                 return true;
@@ -263,7 +260,7 @@ public class nuevoUsuario extends Fragment {
                 return false;
             }
         }else {
-            toastnegativo.show();
+       
             return false;
         }
     }
