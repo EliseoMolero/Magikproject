@@ -49,6 +49,7 @@ def indexinicioR():
 			www = "<body>"+ head(email) + inicio.main(email) + "</body>"
 		else:
 			www = "<body>" + login.main() + "</body>"
+		return www
 	except:
 		www = "<body>" + login.main() + "</body>"
 		return www
