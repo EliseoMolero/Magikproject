@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
@@ -16,7 +19,7 @@ public class login extends AppCompatActivity {
     EditText Temail;
     EditText Tpassword;
     Button entrar;
-
+    ImageButton mostrar;
     Button registrar;
 
 
@@ -27,7 +30,9 @@ public class login extends AppCompatActivity {
         Temail = (EditText) findViewById(R.id.textEmail);
         Tpassword = (EditText) findViewById(R.id.textPassword);
         entrar = (Button) findViewById(R.id.buttonLogin);
+        mostrar = (ImageButton) findViewById(R.id.botonM);
 
+        
         registrar = (Button) findViewById(R.id.buttonRegistro);
 
         entrar.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +66,30 @@ public class login extends AppCompatActivity {
                 Toast.makeText(login.this, "Listo", Toast.LENGTH_SHORT).show();
 
 
+            }
+        });
+
+        registrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent form = new Intent(getApplicationContext(), nuevo_user.class);
+                startActivity(form);
+
+            }
+        });
+         mostrar.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch ( event.getAction() ) {
+                    case MotionEvent.ACTION_DOWN:
+                        Tpassword.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Tpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+                }
+                return true;
             }
         });
 
