@@ -172,7 +172,7 @@ public boolean onNavigationItemSelected(MenuItem item) {
                     .replace(R.id.content_frame, new miPerfil()).commit();
         } else if (id == R.id.contactanos) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, new subirIncidencias()).commit();
+                    .replace(R.id.content_frame, contacto()).commit();
         } else if (id == R.id.salir) {
             finish();
         }
