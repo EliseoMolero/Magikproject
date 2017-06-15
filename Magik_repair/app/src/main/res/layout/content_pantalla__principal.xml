@@ -25,26 +25,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/logoreparasevilla" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="¡Bienvenido a ReparaSevilla!\n\nDespliega el menú lateral izquierdo para navegar por la app."
-            android:textSize="25dp"
-            android:layout_marginTop="250dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="#ff765e"
-            android:background="#333"
-            android:width="330dp"
-            android:textAlignment="center"
-            />
         
     </FrameLayout>
 
