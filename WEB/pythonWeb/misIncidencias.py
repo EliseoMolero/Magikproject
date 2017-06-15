@@ -250,6 +250,7 @@ li a:hover {
 		list_dic.append(str(list_incidencias.get(str(i))))
 	for dics in list_dic:
 		dic = json.loads(dics)
+		decode = dic['imagen'].decode()
 		html += """<tr>
                                     <td>
                                         <div id="incidencia" style="/*margin-left: 80px;*/
@@ -290,7 +291,7 @@ li a:hover {
                                                                     border-radius: 25px 25px 25px 25px;
                                                                     -moz-border-radius: 25px 25px 25px 25px;
                                                                     -webkit-border-radius: 25px 25px 25px 25px;
-                                                                    border: 4px solid #333;" src='"""+str(dic['imagen'])+"""' height="130px" width="230px"></p>
+                                                                    border: 4px solid #333;" src='data:image/png;base64,{0}' height="130px" width="230px">""".format(decode)+"""</p>
                                                         </td>
                                                     </tr>
                                                     <tr>
