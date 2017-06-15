@@ -64,7 +64,6 @@ public class subirIncidencias extends Fragment {
 
     private ImageView mSetImage;
     private Button mOptionButton;
-    private Button mLocationButton;
     private Button mSendButton;
     private String mPath;
     private EditText mCajaDes;
