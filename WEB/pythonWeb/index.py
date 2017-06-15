@@ -23,7 +23,6 @@ def head(email):
             <li><a href="/mapaIncidencias/"""+str(email)+"""">Mapa de Incidencias</a></li>
             <li><a href="/editarPerfil/"""+str(email)+"""">Mi Perfil</a></li>
             <li><a href="/">Cerrar sesión</a></li>
-            <li><a href="/adminIncidencias/"""+str(email)+"""">Panel ADMIN</a></li>
         </ul>
 
         <div>            
