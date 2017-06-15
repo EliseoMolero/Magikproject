@@ -256,7 +256,7 @@ public class nuevoUsuario extends Fragment {
                 toastpositivo.show();
                 return true;
             }else {
-                toastnegativo.show()
+                toastnegativo.show();
                 return false;
             }
         }else {
