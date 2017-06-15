@@ -1,4 +1,5 @@
 package com.example.montxu.magik_repair;
+
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -85,14 +86,6 @@ public class miPerfil extends Fragment{
         nombretxt=(EditText)mView.findViewById(R.id.nombretxt);
         apellidostxt=(EditText)mView.findViewById(R.id.apellidostxt);
 
-        emailtxt.setText(miUsuario.getEmail());
-        passtxt.setText(miUsuario.getPassword());
-        compasstxt.setText(miUsuario.getPassword());
-        nombretxt.setText(miUsuario.getNombre());
-        apellidostxt.setText(miUsuario.getApellidos());
-        fotoperfilview.setImageURI(Uri.parse(miUsuario.getImagenPerfil()));
-        botonguardar.setEnabled(true);
-
         String ids=miUsuario.getIds();
         HttpgetUser tareaAsyncU = new HttpgetUser(ids);
         tareaAsyncU.execute();
@@ -116,6 +109,8 @@ public class miPerfil extends Fragment{
             e.printStackTrace();
         }
 
+        //fotoperfilview.setImageURI();
+        botonguardar.setEnabled(true);
         botonemail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +153,7 @@ public class miPerfil extends Fragment{
             @Override
             public void onClick(View v) {
 
-                Toast toastpositivo =Toast.makeText(getContext(),"Datos modificados con éxito", Toast.LENGTH_SHORT);
+                Toast toastpositivo =Toast.makeText(getContext(),"Datos modificados con Ã©xito", Toast.LENGTH_SHORT);
                 Toast toastnegativo =Toast.makeText(getContext(),"No ha podido modificar sus datos", Toast.LENGTH_SHORT);
 
                 String compassstring =String.valueOf(compasstxt.getText());
@@ -186,6 +181,8 @@ public class miPerfil extends Fragment{
                 }else{
                     toastnegativo.show();
                 }
+
+            }
         });
 
         return mView;
@@ -194,7 +191,7 @@ public class miPerfil extends Fragment{
     private void showOptions() {
         final CharSequence[] option = {"Camara [o]", "Galeria {||}", "Cancelar X"};
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Elige una opción");
+        builder.setTitle("Elige una opciÃ³n");
         builder.setItems(option, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -246,8 +243,6 @@ public class miPerfil extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            switch (requestCode){
-                if(resultCode == RESULT_OK){
             switch (requestCode){
                 case PHOTO_CODE:
                     MediaScannerConnection.scanFile(getContext(),
@@ -330,7 +325,6 @@ public class miPerfil extends Fragment{
         parcelFileDescriptor . close ();
         return image ;
     }
-
     private class HttpPutEditarUsuario extends AsyncTask<String, Void, String> {
 
         String resultado;
@@ -360,7 +354,7 @@ public class miPerfil extends Fragment{
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), "Se modifico su perfil correctamente", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Perfil Modificado con exito", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -391,7 +385,7 @@ public class miPerfil extends Fragment{
             super.onPostExecute(strings);
         }
     }
- public class HttpgetUser extends AsyncTask<String, Void, String[]> {
+    public class HttpgetUser extends AsyncTask<String, Void, String[]> {
 
         String ids="";
 
@@ -406,7 +400,6 @@ public class miPerfil extends Fragment{
             return user;
         }
     }
-
 
     public boolean comprobarExistencia(String email){
 
@@ -438,8 +431,8 @@ public class miPerfil extends Fragment{
 
     public boolean otherValidates(String emailstring, String nombrestring, String apellidosstring) {
 
-        Toast toastnegativo =Toast.makeText(getContext(),"NO se admiten campos vacíos", Toast.LENGTH_SHORT);
-        Toast toastnegativo2 =Toast.makeText(getContext(),"Nombre y/o Apellidos NO pueden ser numéricos", Toast.LENGTH_SHORT);
+        Toast toastnegativo =Toast.makeText(getContext(),"NO se admiten campos vacÃ­os", Toast.LENGTH_SHORT);
+        Toast toastnegativo2 =Toast.makeText(getContext(),"Nombre y/o Apellidos NO pueden ser numÃ©ricos", Toast.LENGTH_SHORT);
 
 
         if(isNumeric(nombrestring)==true || isNumeric(apellidosstring)==true){
@@ -517,8 +510,8 @@ public class miPerfil extends Fragment{
 
     public boolean validateCompass(String compass, String pass){
 
-        Toast toastpositivo =Toast.makeText(getContext(),"Contraseña válida", Toast.LENGTH_SHORT);
-        Toast toastnegativo =Toast.makeText(getContext(),"Contraseña NO válida", Toast.LENGTH_SHORT);
+        Toast toastpositivo =Toast.makeText(getContext(),"ContraseÃ±a vÃ¡lida", Toast.LENGTH_SHORT);
+        Toast toastnegativo =Toast.makeText(getContext(),"ContraseÃ±a NO vÃ¡lida", Toast.LENGTH_SHORT);
         textoemail.setVisibility(View.INVISIBLE);
         textopass.setVisibility(View.INVISIBLE);
 
