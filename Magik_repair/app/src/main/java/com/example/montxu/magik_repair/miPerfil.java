@@ -16,9 +16,11 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,7 +48,7 @@ public class miPerfil extends Fragment{
 
     View mView;
     Usuario miUsuario;
-    Button botonfoto, botonemail, botonpass, botonnombre, botonapellidos, botonguardar;
+    Button botonfoto, Mmostrar, botonpass, botonnombre, botonapellidos, botonguardar;
     EditText emailtxt, passtxt, compasstxt, nombretxt,apellidostxt;
     TextView textopass, textoemail;
     ImageView fotoperfilview;
@@ -79,7 +81,8 @@ public class miPerfil extends Fragment{
         botonguardar=(Button)mView.findViewById(R.id.botonguardar);
         botonpass=(Button)mView.findViewById(R.id.botonpass);
         fotoperfilview=(ImageView)mView.findViewById(R.id.fotoperfilview);
-
+        Mmostrar=(Button)mView.findViewById(R.id.botonM);        
+        
         emailtxt=(EditText)mView.findViewById(R.id.emailtxt);
         passtxt=(EditText)mView.findViewById(R.id.passtxt);
         compasstxt=(EditText)mView.findViewById(R.id.compasstxt);
@@ -148,7 +151,22 @@ public class miPerfil extends Fragment{
                 showOptions();
             }
         });
+        Mmostrar.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
 
+                switch ( event.getAction() ) {
+                    case MotionEvent.ACTION_DOWN:
+                        passtxt.setInputType(InputType.TYPE_CLASS_TEXT);
+                        compasstxt.setInputType(InputType.TYPE_CLASS_TEXT);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        passtxt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        compasstxt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+                }
+                return true;
+            }
+        });
         botonguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,6 +180,7 @@ public class miPerfil extends Fragment{
                 String nombrestring=String.valueOf(nombretxt.getText());
                 String apellidosstring=String.valueOf(apellidostxt.getText());
                 String imgstring=" ";
+                
                 if (encodedImage.equals(" ")) {
                     imgstring = miUsuario.getImagenPerfil();
                 }else{
