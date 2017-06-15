@@ -50,6 +50,9 @@ public class misIncidencias extends Fragment{
 
         try {
             String[] incidencias = tareaAsync.get();
+            if (incidencias.length==0){
+            inList.add(inList.size(),"Introduce tu primera incidencia en Sevilla en la pestaña subir incidencias");
+            }
             for (int j = 0; j <incidencias.length; j++) {
                 Object a = incidencias[j];
                 String dic_a= a.toString();
