@@ -74,7 +74,6 @@ public class miPerfil extends Fragment{
 
         textopass.setVisibility(View.INVISIBLE);
 
-        botonemail=(Button)mView.findViewById(R.id.botonemail);
         botonfoto=(Button)mView.findViewById(R.id.botonfoto);
         botonapellidos=(Button)mView.findViewById(R.id.botonapellidos);
         botonnombre=(Button)mView.findViewById(R.id.botonnombre);
@@ -114,13 +113,6 @@ public class miPerfil extends Fragment{
 
         //fotoperfilview.setImageURI();
         botonguardar.setEnabled(true);
-        botonemail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                emailtxt.setEnabled(true);
-                botonguardar.setEnabled(true);
-            }
-        });
 
         botonpass.setOnClickListener(new View.OnClickListener() {
             @Override
